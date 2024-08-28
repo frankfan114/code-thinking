@@ -63,5 +63,80 @@ class Solution(object):
         
 ```
 
+# 代码随想录 Day 2
 
+209.长度最小的子数组
+```python
+class Solution(object):
+    def minSubArrayLen(self, target, nums):
+        """
+        :type target: int
+        :type nums: List[int]
+        :rtype: int
+        """
+        slow =0
+        sum = 0
+        min_len =float('inf')
+        for i in range(0, len(nums)):
+            sum+=nums[i]
+            while sum>= target:
+                min_len = min(min_len, i - slow + 1)
+                sum-= nums[slow]
+                slow+=1
+            i+=1
+            
+        if min_len == float('inf'):
+            return 0
+        else:
+            return min_len
+```
+need a min_len to keep track the shortest length
 
+ 59.螺旋矩阵II
+```python
+class Solution(object):
+    def generateMatrix(self, n):
+        """
+        :type n: int
+        :rtype: List[List[int]]
+        """
+        nums = [[n**2] * n for _ in range(n)]  
+        startx, starty = 0, 0               
+        loop = n // 2                       
+        count = 1                           
+
+        for i in range(loop):
+            
+            for x in range(starty, n - i - 1):
+                nums[startx][x] = count
+                count += 1
+
+            
+            for y in range(startx, n - i - 1):
+                nums[y][n - i - 1] = count
+                count += 1
+
+            
+            for x in range(n - i - 1, starty, -1):
+                nums[n - i - 1][x] = count
+                count += 1
+
+            
+            for y in range(n - i - 1, startx, -1):
+                nums[y][starty] = count
+                count += 1
+
+            
+            startx += 1
+            starty += 1
+
+        
+
+        return nums
+
+```
+the offset is 1, as the starty and startx also move forward in each layer
+
+区间和
+
+TBD
