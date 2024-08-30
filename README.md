@@ -140,3 +140,59 @@ the offset is 1, as the starty and startx also move forward in each layer
 区间和
 
 TBD
+
+ 203.移除链表元素 
+```python
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution(object):
+    def removeElements(self, head, val):
+        """
+        :type head: ListNode
+        :type val: int
+        :rtype: ListNode
+        """
+        dummy_head = ListNode(next = head)
+        current = dummy_head
+        while current.next:
+            if current.next.val == val:
+                temp = current.next.next
+                current.next = temp
+            else:
+                current = current.next
+        return dummy_head.next
+        
+```
+current= current.next in else condition for 2 reasons: 1. avoid skipping continuous val
+                                                       2. avoid empty node, Nodetype Error
+   
+707.设计链表  
+```
+```
+
+203 翻转链表
+```python
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution(object):
+    def reverseList(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        pre = None
+        cur = head
+        while cur:
+            tmp=cur.next
+            cur.next = pre
+            pre= cur
+            cur = tmp
+        return pre
+```
+condition is cur instead of cur.next, as it don't need to check the next existence, just first one 
