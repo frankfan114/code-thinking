@@ -141,7 +141,9 @@ the offset is 1, as the starty and startx also move forward in each layer
 
 TBD
 
- 203.移除链表元素 
+# 代码随想录 Day 3
+
+203.移除链表元素 
 ```python
 # Definition for singly-linked list.
 # class ListNode(object):
