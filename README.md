@@ -352,3 +352,84 @@ class Solution(object):
         
 ```
 if slow= dum.next, [1], n=1 leads to None = None.next, error
+
+160. Intersection of Two Linked Lists
+```python
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def getIntersectionNode(self, headA, headB):
+        """
+        :type head1, head1: ListNode
+        :rtype: ListNode
+        """
+        lena =0
+        lenb = 0
+        cura = headA
+        curb = headB
+        while cura:
+            cura = cura.next
+            lena+=1
+        while curb:
+            curb = curb.next
+            lenb+=1
+
+        if lena >= lenb:
+            for i in range (lena-lenb):
+                headA=headA.next
+            while headA:
+                if headA == headB:
+                    return headA
+                headA = headA.next
+                headB = headB.next
+            return None
+        else:
+            for i in range (lenb-lena):
+                headB=headB.next
+            while headB:
+                if headB == headA:
+                    return headB
+                headA = headA.next
+                headB = headB.next
+            return None
+```
+other method: if lenb > lena, assign a to b, b to a to reduce repeatence 
+            use proprotional method, 2*3 = 3*2
+142. Linked List Cycle II
+```python
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def detectCycle(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        fast = head
+        slow = head
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next
+            if fast == slow:
+                slow = head
+                while slow != fast:
+                    slow = slow.next
+                    fast = fast.next
+                return slow
+            #fast = fast.next.next
+            #slow = slow.next
+            
+        return None
+
+        
+```
+the incremnet should be placed first, otherwise it will be always true as slow and fast start the same node
+set method really good
