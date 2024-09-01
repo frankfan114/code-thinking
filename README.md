@@ -172,8 +172,103 @@ current= current.next in else condition for 2 reasons: 1. avoid skipping continu
                                                        2. avoid empty node, Nodetype Error
    
 707.设计链表  
+```python
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+class MyLinkedList(object):
+
+    def __init__(self):
+        self.dum_head = ListNode()
+        # self.dum_head.next = None
+        self.size = 0 
+        
+
+    def get(self, index):
+        """
+        :type index: int
+        :rtype: int
+        """
+        if index >=0 and index < self.size:
+            current = self.dum_head #
+            for i in range(index+1):
+                #self.dum_head = seld.dum_head.next
+                current = current.next
+            return current.val
+        else:
+            return -1
+        
+
+    def addAtHead(self, val):
+        """
+        :type val: int
+        :rtype: None
+        """
+        tmp = self.dum_head.next
+        self.dum_head.next = ListNode(val, tmp)
+        self.size +=1
+
+        
+
+    def addAtTail(self, val):
+        """
+        :type val: int
+        :rtype: None
+        """
+        current = self.dum_head
+        while current.next:
+            current = current.next
+        current.next = ListNode(val)
+        self.size +=1
+    
+        
+
+    def addAtIndex(self, index, val):
+        """
+        :type index: int
+        :type val: int
+        :rtype: None
+        """
+        if index>=0:
+            if index <= self.size: 
+                cur =self.dum_head
+                while index >0:
+                    cur = cur.next
+                    index -=1
+                tmp = cur.next
+                cur.next =ListNode(val, tmp)
+                self.size +=1
+
+
+    def deleteAtIndex(self, index):
+        """
+        :type index: int
+        :rtype: None
+        """
+        if index >=0 and index < self.size:
+            cur = self.dum_head
+            while index >0:
+                cur = cur.next
+                index -=1
+
+            tmp = cur.next.next
+            cur.next = tmp
+            #self.dum_jead.next.val = tmp.val
+            self.size -=1
+
+
+# Your MyLinkedList object will be instantiated and called as such:
+# obj = MyLinkedList()
+# param_1 = obj.get(index)
+# obj.addAtHead(val)
+# obj.addAtTail(val)
+# obj.addAtIndex(index,val)
+# obj.deleteAtIndex(index)
 ```
-```
+the condtion error for add at index, should only include = and < size
+use cur to transverse, so that the structure of self.head won't change 
 
 203 翻转链表
 ```python
@@ -198,3 +293,62 @@ class Solution(object):
         return pre
 ```
 condition is cur instead of cur.next, as it don't need to check the next existence, just first one 
+
+
+# 代码随想录 Day 4
+24. Swap Nodes in Pairs
+```python 
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution(object):
+    def swapPairs(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        dum = ListNode(next = head)
+        pre = dum# cur = dum
+        while pre.next and pre.next.next:
+            tmp3 = pre.next.next.next
+            tmp2 = pre.next.next 
+            tmp1 = pre.next
+            #pre.next = tmp2
+            tmp2.next = tmp1#1 
+            tmp1.next = tmp3#2
+            pre.next = tmp2#3
+            pre = pre.next.next
+        return dum.next    
+```
+as long as 1 and 2 in sequence, 312 and 123 both work
+
+19. Remove Nth Node From End of List
+```python
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution(object):
+    def removeNthFromEnd(self, head, n):
+        """
+        :type head: ListNode
+        :type n: int
+        :rtype: ListNode
+        """
+        dum = ListNode(0,head)
+        fast= dum
+        slow = dum
+        #slow= dum.next leads to Nonetpye
+        for i in range(n+1):
+            fast = fast.next
+        while fast:
+            slow= slow.next
+            fast= fast.next
+        slow.next = slow.next.next
+        return dum.next
+        
+```
+if slow= dum.next, [1], n=1 leads to None = None.next, error
