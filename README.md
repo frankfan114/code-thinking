@@ -1,6 +1,6 @@
 # 代码随想录 Day 1
 
-## 704. 二分查找
+704. 二分查找
 
 ```python
 class Solution(object):
