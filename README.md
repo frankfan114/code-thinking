@@ -433,3 +433,91 @@ class Solution(object):
 ```
 the incremnet should be placed first, otherwise it will be always true as slow and fast start the same node
 set method really good
+
+# 代码随想录 Day 5
+242.有效的字母异位词 
+```python
+class Solution(object):
+    def isAnagram(self, s, t):
+        """
+        :type s: str
+        :type t: str
+        :rtype: bool
+        """
+        record = [0]*26
+        for i in s:
+            record[ord(i)-ord('a')] +=1
+        for i in t:
+            record[ord(i)-ord('a')] -=1
+        if record ==[0]*26:
+            return True
+        else:
+            return False
+
+```
+349. 两个数组的交集 
+```python
+class Solution(object):
+    def intersection(self, nums1, nums2):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: List[int]
+        """
+        table = {}
+        for num in nums1:
+            table[num] = table.get(num, 0) + 1
+        
+        res = set()
+        for num in nums2:
+            if num in table:
+                res.add(num)
+                del table[num]
+        
+        return list(res)
+        
+```
+202. 快乐数
+```python
+class Solution(object):
+    def isHappy(self, n):
+        """
+        :type n: int
+        :rtype: bool
+        """
+        sum =set()
+        while True:
+            #a = self.get_sum(n)
+            if n ==1:
+                return True
+            if n in sum:
+                return False
+            else:
+                sum.add(n)
+            n = self.get_sum(n)
+    
+    def get_sum(self,n): 
+        new_num = 0
+        while n:
+            n, r = divmod(n, 10)
+            new_num += r ** 2
+        return new_num
+```
+1 loop -> sum will repeat
+2 inital n should be include to reduce repetance, as if it's get again, there's definitely a loop
+1. 两数之和   
+```python
+class Solution(object):
+    def twoSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        record = dict()
+        for i in range(len(nums)):
+            if target-nums[i] in record:
+                return [i,record[target-nums[i]]]
+            else:
+                record[nums[i]] = i
+```
