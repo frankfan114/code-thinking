@@ -434,7 +434,7 @@ class Solution(object):
 the incremnet should be placed first, otherwise it will be always true as slow and fast start the same node
 set method really good
 
-# 代码随想录 Day 5
+# 代码随想录 Day 6
 242.有效的字母异位词 
 ```python
 class Solution(object):
