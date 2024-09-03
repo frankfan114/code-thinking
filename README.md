@@ -521,3 +521,87 @@ class Solution(object):
             else:
                 record[nums[i]] = i
 ```
+
+# 代码随想录 Day 7
+454.四数相加II 
+```python
+class Solution(object):
+    def fourSumCount(self, nums1, nums2, nums3, nums4):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :type nums3: List[int]
+        :type nums4: List[int]
+        :rtype: int
+        """
+        record = dict()
+        occ = 0
+        # key: sum of a, b
+        # value: times of this sum
+        for i in range(len(nums1)):
+            for l in range(len(nums2)):
+                sum = nums1[i]+nums2[l]
+                if sum in record:
+                    record[sum]+=1
+                else:
+                    record[sum] = 1
+
+        for i in range(len(nums3)):
+            for l in range(len(nums4)):
+                sum1 = nums3[i]+nums4[l]
+                if -sum1 in record:
+                    occ +=record[-sum1]
+        return occ
+```
+the value for sum of a+b is the count of a+b in first two array
+383. 赎金信 
+```python
+ransom_count = [0] * 26
+        magazine_count = [0] * 26
+        for c in ransomNote:
+            ransom_count[ord(c) - ord('a')] += 1
+        for c in magazine:
+            magazine_count[ord(c) - ord('a')] += 1
+        return all(ransom_count[i] <= magazine_count[i] for i in range(26))
+```
+array has lower space and time needed compared to map
+15. 三数之和 
+```python
+class Solution(object):
+    def threeSum(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        result = []
+        nums.sort()
+        
+
+        for i in range(len(nums)):
+             # 如果第一个元素已经大于0，不需要进一步检查
+            if nums[i] > 0:
+                return result
+            if i>0 and nums[i]==nums[i-1]:
+                continue
+            left = i + 1
+            right = len(nums) - 1
+            while left< right: # check every possible case for i
+                if nums[i]+nums[left]+nums[right]<0:
+                    left+=1
+                elif nums[i]+nums[left]+nums[right]>0:
+                    right-=1
+                else:
+                    result.append([nums[i],nums[left],nums[right]])
+                    # 跳过相同的元素以避免重复
+                    while right > left and nums[right] == nums[right - 1]:
+                        right -= 1
+                    while right > left and nums[left] == nums[left + 1]:
+                        left += 1
+                    left +=1
+                    right -=1
+        return result
+```
+1 return if >0
+2 jump repeat left and right
+TBD dict version   
+18. 四数之和 
