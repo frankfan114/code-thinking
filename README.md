@@ -605,3 +605,43 @@ class Solution(object):
 2 jump repeat left and right
 TBD dict version   
 18. 四数之和 
+···
+···
+
+# 代码随想录 Day 8
+344.反转字符串
+```python
+class Solution(object):
+    def reverseString(self, s):
+        """
+        :type s: List[str]
+        :rtype: None Do not return anything, modify s in-place instead.
+        """
+        left = 0
+        right = len(s)-1
+        while right > left:
+            tmp = s[left]
+            s[left] = s[right]
+            s[right] = tmp
+            right -=1
+            left +=1
+        return s
+        
+```
+
+
+541. 反转字符串II
+```python
+p = 0
+        while p < len(s):
+            p2 = p + k
+            # Written in this could be more pythonic.
+            s = s[:p] + s[p: p2][::-1] + s[p2:]
+            p = p + 2 * k
+        return s
+```
+所以当需要固定规律一段一段去处理字符串的时候，要想想在在for循环的表达式上做做文章。
+对于字符串s = 'abc'，如果使用s[0:999] ===> 'abc'。字符串末尾如果超过最大长度，则会返回至字符串最后一个值，这个特性可以避免一些边界条件的处理。
+
+卡码网：54.替换数字
+TBD
