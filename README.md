@@ -603,10 +603,51 @@ class Solution(object):
 ```
 1 return if >0
 2 jump repeat left and right
+
 TBD dict version   
+
 18. 四数之和 
-···
-···
+```python
+class Solution(object):
+    def fourSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        nums.sort()
+        n = len(nums)
+        result = []
+        for a in range(n):
+            if nums[a] > target and nums[a] > 0 and target > 0:
+                break
+            if a>0 and nums[a-1] == nums[a]: # need a>0, prevent out of bound
+                continue
+            for b in range(a+1,n):
+                if nums[a]+nums[b] > target and target >0: # no need for nums[b]>0
+                    break
+                if b>a+1 and nums[b-1] == nums[b]:
+                    continue
+                left = b+1
+                right = n-1
+                while left < right:
+                    sum= nums[a]+nums[b]+nums[left]+nums[right]
+                    if sum == target:
+                        result.append([nums[a], nums[b], nums[left], nums[right]])
+                        # reduce repetation part
+                        while left < right and nums[left] == nums[left+1]:
+                            left += 1
+                        while left < right and nums[right] == nums[right-1]:
+                            right -= 1
+                        #
+                        left +=1
+                        right -=1
+                    elif sum < target:
+                        left+=1
+                    else:
+                        right -=1
+        return result
+```
 
 # 代码随想录 Day 8
 344.反转字符串
@@ -644,4 +685,231 @@ p = 0
 对于字符串s = 'abc'，如果使用s[0:999] ===> 'abc'。字符串末尾如果超过最大长度，则会返回至字符串最后一个值，这个特性可以避免一些边界条件的处理。
 
 卡码网：54.替换数字
+TBD
+# 代码随想录 Day 9
+
+151.翻转字符串里的单词
+```python
+class Solution(object):
+    def reverseWords(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        ws = s.split()
+        ws =ws[::-1]
+        s = ' '.join(ws) 
+        return s
+```
+1 delete space 2 reverse 3 recombine
+卡码网：55.右旋转字符串
+TBD
+28. 实现 strStr()
+```python
+```
+TBD
+459.重复的子字符串
+```python
+```
+TBD
+# 代码随想录 Day 10
+232.用栈实现队列 
+```python
+class MyQueue(object):
+
+    def __init__(self):
+        self.stack_in = []
+        self.stack_out = []
+        
+
+    def push(self, x):
+        """
+        :type x: int
+        :rtype: None
+        """
+        
+        self.stack_in.append(x)
+        
+
+    def pop(self):
+        """
+        :rtype: int
+        """
+        if self.empty():
+            return None
+        
+        if self.stack_out:
+            return self.stack_out.pop()
+        else:
+            for i in range(len(self.stack_in)):
+                self.stack_out.append(self.stack_in.pop())
+            return self.stack_out.pop()
+
+        
+        
+
+    def peek(self):
+        """
+        :rtype: int
+        """
+        ans = self.pop()
+        self.stack_out.append(ans)
+        return ans
+        
+
+    def empty(self):
+        """
+        :rtype: bool
+        """
+        return not (self.stack_in or self.stack_out)
+
+
+# Your MyQueue object will be instantiated and called as such:
+# obj = MyQueue()
+# obj.push(x)
+# param_2 = obj.pop()
+# param_3 = obj.peek()
+# param_4 = obj.empty()
+```
+use 2 stack, 1 for in and 1 for out
+225. 用队列实现栈 
+```python
+class MyStack(object):
+
+    def __init__(self):
+        self.queue_in=deque()
+        self.queue_out=deque()
+
+    def push(self, x):
+        """
+        :type x: int
+        :rtype: None
+        """
+        self.queue_in.append(x)
+        
+
+    def pop(self):
+        """
+        :rtype: int
+        """
+        if self.empty():
+            return None
+
+        for i in range(len(self.queue_in) - 1):
+            self.queue_out.append(self.queue_in.popleft())
+        
+        self.queue_in, self.queue_out = self.queue_out, self.queue_in    # 交换in和out，这也是为啥in只用来存
+        return self.queue_out.popleft()
+        
+
+    def top(self):
+        """
+        :rtype: int
+        """
+        if self.empty():
+            return None
+
+        for i in range(len(self.queue_in) - 1):
+            self.queue_out.append(self.queue_in.popleft())
+        
+        self.queue_in, self.queue_out = self.queue_out, self.queue_in 
+        temp = self.queue_out.popleft()   
+        self.queue_in.append(temp)
+        return temp
+        
+
+    def empty(self):
+        """
+        :rtype: bool
+        """
+        return len(self.queue_in) == 0
+        
+
+
+# Your MyStack object will be instantiated and called as such:
+# obj = MyStack()
+# obj.push(x)
+# param_2 = obj.pop()
+# param_3 = obj.top()
+# param_4 = obj.empty()
+```
+FIF0 have feature that, the order won't reverse if you put them to a new queue
+20. 有效的括号 
+```python
+class Solution(object):
+    def isValid(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        cor = []
+        for i in s:
+            if i == '(': 
+                cor.append(')')
+            elif i == '[':
+                cor.append(']')
+            elif i == '{':
+                cor.append('}')
+            elif not cor or i != cor[-1]:
+                return False
+            else:
+                cor.pop()
+        if cor:
+            return False
+        else:
+            return True
+```
+3 possible conditions: 1. left more, 2. right more, 3. type not meet
+1047. 删除字符串中的所有相邻重复项 
+```python
+class Solution(object):
+    def removeDuplicates(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        stack = []
+        for i in s:
+            if stack and i == stack[-1]:
+                stack.pop()
+            else:
+                stack.append(i)
+        return ''.join(stack)
+```
+
+# 代码随想录 Day 11 (07/09/24)
+
+150. 逆波兰表达式求值 
+```python
+def div(x, y):
+    # 使用整数除法的向零取整方式
+    return int(x / y) if x * y > 0 else -(abs(x) // abs(y))
+    
+class Solution(object):
+    op_map = {'+': add, '-': sub, '*': mul, '/': div}
+
+    def evalRPN(self, tokens):
+        """
+        :type tokens: List[str]
+        :rtype: int
+        """
+        stack = []
+        for token in tokens:
+            if token not in {'+', '-', '*', '/'}:
+                stack.append(int(token))
+            else:
+                op2 = stack.pop()
+                op1 = stack.pop()
+                stack.append(self.op_map[token](op1, op2))  # 第一个出来的在运算符后面
+        return stack.pop()
+```
+divisioin need special treat for integer
+239. 滑动窗口最大值
+```python
+```
+TBD
+
+347. 前 K 个高频元素
+```python
+```
 TBD
