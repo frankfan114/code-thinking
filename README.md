@@ -1065,3 +1065,37 @@ class Solution:
 ```
 recursive
 use pointer to add node
+
+# 代码随想录 Day 14
+# 代码随想录 Day 15
+
+# 代码随想录 Day 20
+# 代码随想录 Day 21
+455. Assign Cookies
+```python
+class Solution(object):
+    def findContentChildren(self, g, s):
+        """
+        :type g: List[int]
+        :type s: List[int]
+        :rtype: int
+        """
+        g.sort() # not sorted in question list 
+        s.sort()
+        count = 0 
+        smax = len(s)-1
+        gmax = len(g)-1
+        # while gmax >=0:
+        while gmax >=0 and smax >= 0:
+            if s[smax] >= g[gmax]:
+                count +=1
+                smax -=1
+            gmax -=1
+        return count
+```
+description sort the lists, but the question did not, so sort list first
+the condition to end also because of cookie list run out.
+
+376. Wiggle Subsequence
+
+# 代码随想录 Day 27
