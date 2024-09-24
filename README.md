@@ -1068,9 +1068,21 @@ use pointer to add node
 
 # 代码随想录 Day 14
 # 代码随想录 Day 15
+# 代码随想录 Day 16
+# 代码随想录 Day 17
+# 代码随想录 Day 18
 
 # 代码随想录 Day 20
 # 代码随想录 Day 21
+# 代码随想录 Day 22
+
+# 代码随想录 Day 23
+
+# 代码随想录 Day 24
+
+# 代码随想录 Day 25
+
+# 代码随想录 Day 27
 455. Assign Cookies
 ```python
 class Solution(object):
@@ -1097,5 +1109,132 @@ description sort the lists, but the question did not, so sort list first
 the condition to end also because of cookie list run out.
 
 376. Wiggle Subsequence
+```python
+class Solution(object):
+    def wiggleMaxLength(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        
+        if len(nums) < 2:
+            return len(nums)
 
-# 代码随想录 Day 27
+        pre_dif = 0
+        count = 1 #
+        for i in range(len(nums) - 1):
+            cur_dif = nums[i+1] - nums[i]
+
+            if (cur_dif > 0 and pre_dif <= 0) or (cur_dif < 0 and pre_dif >= 0):
+                count += 1
+                pre_dif = cur_dif 
+
+        return count
+```
+only when slope change, update the pre_dif
+to deal with dif == 0, that means only 1 wiggle 
+53. Maximum Subarray
+```python
+class Solution(object):
+    def maxSubArray(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        sum = 0
+        max = nums[0]
+        for i in range(len(nums)):
+             
+            if sum < 0:
+                sum = nums[i]
+            else:
+                sum += nums[i]
+                
+            if max < sum:
+                max = sum 
+
+        return max
+```
+greedy point: what bring to the next increment need to be positive
+# 代码随想录 Day 28
+122. Best Time to Buy and Sell Stock II
+```python
+class Solution(object):
+    def maxProfit(self, prices):
+        """
+        :type prices: List[int]
+        :rtype: int
+        """
+        sum = 0 
+        if len(prices) ==0:
+            return sum 
+        for i in range(len(prices)-1):
+            if prices[i+1]-prices[i] >0:
+                sum += prices[i+1]-prices[i]
+        return sum
+```
+55. Jump Game
+```python
+class Solution(object):
+    def canJump(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: bool
+        """
+        # coverage for the jump
+        cover = 0
+        if len(nums) == 1: return True
+        i = 0
+        while i <= cover:
+            cover = max(i + nums[i], cover)
+            if cover >= len(nums) - 1: return True
+            i += 1
+        return False
+```
+key part: cover = max(i+nums[i], cover)
+update cover each time to enlarge the range 
+45. Jump Game II
+```python
+class Solution(object):
+    def jump(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        cur_distance = 0  # 当前覆盖的最远距离下标
+        ans = 0  # 记录走的最大步数
+        next_distance = 0  # 下一步覆盖的最远距离下标
+        
+        for i in range(len(nums) - 1):  # 注意这里是小于len(nums) - 1，这是关键所在
+            next_distance = max(nums[i] + i, next_distance)  # 更新下一步覆盖的最远距离下标
+            if i == cur_distance:  # 遇到当前覆盖的最远距离下标
+                cur_distance = next_distance  # 更新当前覆盖的最远距离下标
+                ans += 1
+        
+        return ans
+```
+the only condition for step +1 is coverga smaller than current move, before move reach end
+1005. Maximize Sum Of Array After K Negations
+```python
+class Solution(object):
+    def largestSumAfterKNegations(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        sum = 0 
+        count = 0
+        nums.sort(key=abs, reverse=True)
+        for i in range (len(nums)):
+            if k != 0 and nums[i] <0:
+                k -=1
+                nums[i] = -nums[i]
+            sum += nums[i]
+        if k%2 != 0:
+            sum-=2*nums[-1]
+        
+        return sum
+```
+1 reverse the negative number as possible
+2 flip on the smallest one for the rest of left k times
