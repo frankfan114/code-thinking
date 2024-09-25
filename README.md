@@ -1239,3 +1239,116 @@ class Solution(object):
 1 reverse the negative number as possible
 2 flip on the smallest one for the rest of left k times
 
+# 代码随想录 Day 29
+134. Gas Station
+```python
+class Solution(object):
+    def canCompleteCircuit(self, gas, cost):
+        """
+        :type gas: List[int]
+        :type cost: List[int]
+        :rtype: int
+        """
+        curSum = 0  # 当前累计的剩余油量
+        totalSum = 0  # 总剩余油量
+        start = 0  # 起始位置
+        
+        for i in range(len(gas)):
+            curSum += gas[i] - cost[i]
+            totalSum += gas[i] - cost[i]
+            
+            if curSum < 0:  # 当前累计剩余油量curSum小于0
+                start = i + 1  # 起始位置更新为i+1
+                curSum = 0  # curSum重新从0开始累计
+        
+        if totalSum < 0:
+            return -1  # 总剩余油量totalSum小于0，说明无法环绕一圈
+        return start
+                
+```
+局部最优：当前累加rest[i]的和curSum一旦小于0，起始位置至少要是i+1，因为从i之前开始一定不行。全局最优：找到可以跑一圈的起始位置。
+
+135. Candy
+```python
+class Solution(object):
+    def candy(self, ratings):
+        """
+        :type ratings: List[int]
+        :rtype: int
+        """
+        candy = [1]*len(ratings)
+        sum = 0
+        for i in range(1, len(ratings)):
+            if ratings[i] > ratings[i-1]:
+                candy[i] = candy[i-1]+1
+            # else:
+            #     candy[i] = candy[i+1]
+            
+        for i in range(len(ratings)-2, -1, -1):
+            if ratings[i] > ratings[i+1]:
+                #candy[i] = candy[i+1]+1 
+                candy[i] = max(candy[i], candy[i+1]+1)
+            # else:
+            #     candy[i] = candy[i+1]
+            
+            sum+=candy[i]
+        sum += candy[len(ratings)-1]
+        return sum 
+```
+1 use max(a,b), instead of add 1, as the current value may alreay larger than neighbour
+2 since initialize with 1 in each index, no need to candy[i]=candy[i+1]
+
+860. Lemonade Change
+```python
+class Solution(object):
+    def lemonadeChange(self, bills):
+        """
+        :type bills: List[int]
+        :rtype: bool
+        """
+        five = 0 
+        ten = 0
+        for i in range(len(bills)):
+            if bills[i] == 5:
+                five+=1
+            elif bills[i] == 10:
+                if five >0:
+                    five -=1
+                    ten += 1
+                else:
+                    return False
+            else:
+                if ten>0 and five >0:
+                    ten -= 1
+                    five -= 1
+                elif five >2:
+                    five -=3
+                else:
+                    return False
+        return True
+```
+406. Queue Reconstruction by Height
+```python
+class Solution(object):
+    def reconstructQueue(self, people):
+        """
+        :type people: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        # 先按照h维度的身高顺序从高到低排序。确定第一个维度
+        # lambda返回的是一个元组：当-x[0](维度h）相同时，再根据x[1]（维度k）从小到大排序
+        people.sort(key=lambda x: (-x[0], x[1]))
+        que = []
+	
+	# 根据每个元素的第二个维度k，贪心算法，进行插入
+        # people已经排序过了：同一高度时k值小的排前面。
+        for p in people:
+            que.insert(p[1], p)
+        return que
+        
+```
+身高从大到小排序后：
+
+局部最优：优先按身高高的people的k来插入。插入操作过后的people满足队列属性
+
+全局最优：最后都做完插入操作，整个队列满足题目队列属性

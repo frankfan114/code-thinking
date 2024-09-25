@@ -15,5 +15,5 @@ class Solution(object):
             sum += nums[i]
         if k%2 != 0:
             sum-=2*nums[-1]
-        
+            
         return sum
