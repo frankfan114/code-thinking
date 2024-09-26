@@ -1352,3 +1352,79 @@ class Solution(object):
 局部最优：优先按身高高的people的k来插入。插入操作过后的people满足队列属性
 
 全局最优：最后都做完插入操作，整个队列满足题目队列属性
+
+# 代码随想录 Day 30
+452. Minimum Number of Arrows to Burst Balloons
+```python
+class Solution(object):
+    def findMinArrowShots(self, points):
+        """
+        :type points: List[List[int]]
+        :rtype: int
+        """
+        points.sort(key = lambda x: (x[0], x[1]))
+        # avoid negative , not initialize as 0, 0
+        count = 1
+        end = points[0][1] 
+        
+        for i in range(1,len(points)):
+            if points[i][0]> end:
+                end = points[i][1]
+                count +=1
+            #update end 
+            elif points[i][0]<= end:
+                end = min(end, points[i][1])
+        return count
+```
+435. Non-overlapping Intervals
+```python
+class Solution(object):
+    def eraseOverlapIntervals(self, intervals):
+        """
+        :type intervals: List[List[int]]
+        :rtype: int
+        """
+        if not intervals:
+            return 0        
+        intervals.sort(key = lambda x: x[0])
+        end=intervals[0][1]
+        count = 0 
+        for i in range(1, len(intervals)):
+            if intervals[i][0] < end:
+                count +=1
+                end = min(end, intervals[i][1]) # check to update end
+            else:
+                end = intervals[i][1] 
+        return count 
+```
+update to smaller end so that more possible non-overlapping
+763. Partition Labels
+```python
+class Solution(object):
+    def partitionLabels(self, s):
+        """
+        :type s: str
+        :rtype: List[int]
+        """
+        last_occurrence = {}  # 存储每个字符最后出现的位置
+        for i, ch in enumerate(s):
+            last_occurrence[ch] = i
+
+        result = []
+        start = 0
+        end = 0
+        for i, ch in enumerate(s):
+            end = max(end, last_occurrence[ch])  # 找到当前字符出现的最远位置
+            if i == end:  # 如果当前位置是最远位置，表示可以分割出一个区间
+                result.append(end - start + 1)
+                start = i + 1
+
+        return result
+        
+```
+method 1 如果找到字符最远出现位置下标和当前下标相等了，则找到了分割点
+```python
+```
+method 1 TBD
+
+
