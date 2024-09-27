@@ -1425,6 +1425,71 @@ class Solution(object):
 method 1 如果找到字符最远出现位置下标和当前下标相等了，则找到了分割点
 ```python
 ```
-method 1 TBD
+method 2 TBD
+# 代码随想录 Day 31
+56. Merge Intervals
+```python
+class Solution(object):
+    def merge(self, intervals):
+        """
+        :type intervals: List[List[int]]
+        :rtype: List[List[int]]
+        """
+		if len(intervals) == 0:
+            return result  # 区间集合为空直接返回
+        intervals.sort(key=lambda x:(x[0],x[1]))
+        output = []
+        start = intervals[0][0]
+        end = intervals[0][1]
+        for i in range(1,len(intervals)):
+            if intervals[i][0]<=end:
+                end = max(intervals[i][1],end)
+            else:
+                output.append([start, end])# append the finished part here
+                start = intervals[i][0]
+                end = intervals[i][1]
+        output.append([start,end])
+        return output
+```
 
+738. Monotone Increasing Digits
+```python
+class Solution(object):
+    def monotoneIncreasingDigits(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
 
+        # for i in range(len(n)-1,0,-1):
+        #     if n[i]<n[i+1]:
+        #         n[i+1]= n[i]
+        #         n[i+1] = 9
+        # return n  
+         # 将整数转换为字符串
+        strNum = str(n)
+        # flag用来标记赋值9从哪里开始
+        # 设置为字符串长度，为了防止第二个for循环在flag没有被赋值的情况下执行
+        flag = len(strNum)
+        
+        # 从右往左遍历字符串
+        for i in range(len(strNum) - 1, 0, -1):
+            # 如果当前字符比前一个字符小，说明需要修改前一个字符
+            if strNum[i - 1] > strNum[i]:
+                flag = i  # 更新flag的值，记录需要修改的位置
+                # 将前一个字符减1，以保证递增性质
+                strNum = strNum[:i - 1] + str(int(strNum[i - 1]) - 1) + strNum[i:]
+        
+        # 将flag位置及之后的字符都修改为9，以保证最大的递增数字
+        for i in range(flag, len(strNum)):
+            strNum = strNum[:i] + '9' + strNum[i + 1:]
+        
+        # 将最终的字符串转换回整数并返回
+        return int(strNum)
+```
+从个例推断出最大是每次比较结果为(n-1)9的形式
+前一个字符减一, 从而避免20->9的情况
+968. Binary Tree Cameras
+```python
+```
+TBD
