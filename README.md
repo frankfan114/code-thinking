@@ -1,4 +1,4 @@
-# 代码随想录 Day 1
+## 代码随想录 Day 1
 
 704. 二分查找
 
@@ -63,7 +63,7 @@ class Solution(object):
         
 ```
 
-# 代码随想录 Day 2
+## 代码随想录 Day 2
 
 209.长度最小的子数组
 ```python
@@ -141,7 +141,7 @@ the offset is 1, as the starty and startx also move forward in each layer
 
 TBD
 
-# 代码随想录 Day 3
+## 代码随想录 Day 3
 
 203.移除链表元素 
 ```python
@@ -295,7 +295,7 @@ class Solution(object):
 condition is cur instead of cur.next, as it don't need to check the next existence, just first one 
 
 
-# 代码随想录 Day 4
+## 代码随想录 Day 4
 24. Swap Nodes in Pairs
 ```python 
 # Definition for singly-linked list.
@@ -434,7 +434,7 @@ class Solution(object):
 the incremnet should be placed first, otherwise it will be always true as slow and fast start the same node
 set method really good
 
-# 代码随想录 Day 6
+## 代码随想录 Day 6
 242.有效的字母异位词 
 ```python
 class Solution(object):
@@ -522,7 +522,7 @@ class Solution(object):
                 record[nums[i]] = i
 ```
 
-# 代码随想录 Day 7
+## 代码随想录 Day 7
 454.四数相加II 
 ```python
 class Solution(object):
@@ -649,7 +649,7 @@ class Solution(object):
         return result
 ```
 
-# 代码随想录 Day 8
+## 代码随想录 Day 8
 344.反转字符串
 ```python
 class Solution(object):
@@ -686,7 +686,7 @@ p = 0
 
 卡码网：54.替换数字
 TBD
-# 代码随想录 Day 9
+## 代码随想录 Day 9
 
 151.翻转字符串里的单词
 ```python
@@ -712,7 +712,7 @@ TBD
 ```python
 ```
 TBD
-# 代码随想录 Day 10
+## 代码随想录 Day 10
 232.用栈实现队列 
 ```python
 class MyQueue(object):
@@ -877,7 +877,7 @@ class Solution(object):
         return ''.join(stack)
 ```
 
-# 代码随想录 Day 11 (07/09/24)
+## 代码随想录 Day 11 (07/09/24)
 
 150. 逆波兰表达式求值 
 ```python
@@ -914,7 +914,7 @@ TBD
 ```
 TBD
 
-# 代码随想录 Day 13
+## 代码随想录 Day 13
 144.二叉树的前序遍历
 ```python
 # Definition for a binary tree node.
@@ -1066,15 +1066,15 @@ class Solution:
 recursive
 use pointer to add node
 
-# 代码随想录 Day 14
-# 代码随想录 Day 15
-# 代码随想录 Day 16
-# 代码随想录 Day 17
-# 代码随想录 Day 18
+## 代码随想录 Day 14
+## 代码随想录 Day 15
+## 代码随想录 Day 16
+## 代码随想录 Day 17
+## 代码随想录 Day 18
 
-# 代码随想录 Day 20
-# 代码随想录 Day 21
-# 代码随想录 Day 22
+## 代码随想录 Day 20
+## 代码随想录 Day 21
+## 代码随想录 Day 22
 77. Combinations
 ```python
 class Solution(object):
@@ -1198,7 +1198,7 @@ class Solution(object):
 use mapping for letter
 no startIndex, this is combination of different set, not combination inside one set
 
-# 代码随想录 Day 23
+## 代码随想录 Day 23
 39. Combination Sum
 ```python
 class Solution(object):
@@ -1263,12 +1263,12 @@ class Solution(object):
 ```
 same level pruning
 
-# 代码随想录 Day 24
+## 代码随想录 Day 24
 
 
-# 代码随想录 Day 25
+## 代码随想录 Day 25
 
-# 代码随想录 Day 27
+## 代码随想录 Day 27
 455. Assign Cookies
 ```python
 class Solution(object):
@@ -1342,7 +1342,7 @@ class Solution(object):
         return max
 ```
 greedy point: what bring to the next increment need to be positive
-# 代码随想录 Day 28
+## 代码随想录 Day 28
 122. Best Time to Buy and Sell Stock II
 ```python
 class Solution(object):
@@ -1425,7 +1425,7 @@ class Solution(object):
 1 reverse the negative number as possible
 2 flip on the smallest one for the rest of left k times
 
-# 代码随想录 Day 29
+## 代码随想录 Day 29
 134. Gas Station
 ```python
 class Solution(object):
@@ -1539,7 +1539,7 @@ class Solution(object):
 
 全局最优：最后都做完插入操作，整个队列满足题目队列属性
 
-# 代码随想录 Day 30
+## 代码随想录 Day 30
 452. Minimum Number of Arrows to Burst Balloons
 ```python
 class Solution(object):
@@ -1612,7 +1612,7 @@ method 1 如果找到字符最远出现位置下标和当前下标相等了，�
 ```python
 ```
 method 2 TBD
-# 代码随想录 Day 31
+## 代码随想录 Day 31
 56. Merge Intervals
 ```python
 class Solution(object):
@@ -1680,7 +1680,7 @@ class Solution(object):
 ```
 TBD
 
-# 代码随想录 Day 32
+## 代码随想录 Day 32
 509. Fibonacci Number
 ```python
 class Solution(object):
