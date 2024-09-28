@@ -1075,10 +1075,196 @@ use pointer to add node
 # 代码随想录 Day 20
 # 代码随想录 Day 21
 # 代码随想录 Day 22
+77. Combinations
+```python
+class Solution(object):
+    def combine(self, n, k):
+        """
+        :type n: int
+        :type k: int
+        :rtype: List[List[int]]
+        """
+        result = []  # 存放结果集
+        self.backtracking(n, k, 1, [], result)
+        return result
+    def backtracking(self, n, k, startIndex, path, result):
+        if len(path) == k:
+            result.append(path[:])
+            return
+        for i in range(startIndex, n - (k - len(path)) + 2):  # 优化的地方
+            path.append(i)  # 处理节点
+            self.backtracking(n, k, i + 1, path, result)
+            path.pop()  # 回溯，撤销处理的节点
+```
+回溯三部曲
+void backtracking(参数) {
+    if (终止条件) {
+        存放结果;
+        return;
+    }
+
+    for (选择：本层集合中元素（树中节点孩子的数量就是集合的大小）) {
+        处理节点;
+        backtracking(路径，选择列表); // 递归
+        回溯，撤销处理结果
+    }
+}
+216. Combination Sum III
+```python
+class Solution(object):
+    def combinationSum3(self, k, n):
+        """
+        :type k: int
+        :type n: int
+        :rtype: List[List[int]]
+        """
+    #     result = []
+    #     self.backtracking(k,n,[],result,1)
+    #     return result
+    # def backtracking(self, k,n, path,result, startIndex):
+    #     if len(path) == k:
+    #         result.append(path[:])
+    #         return
+    #     for i in range (startIndex,n-k+1):
+    #         if n-i>0:
+    #             path.append(i)
+    #             self.backtracking(k-1,n, path,result, i)
+    #             path.pop(i)
+        result = []  # 存放结果集
+        self.backtracking(n, k, 0, 1, [], result)
+        return result
+
+    def backtracking(self, targetSum, k, currentSum, startIndex, path, result):
+        if currentSum > targetSum:  # 剪枝操作
+            return  # 如果path的长度等于k但currentSum不等于targetSum，则直接返回
+        if len(path) == k:
+            if currentSum == targetSum:
+                result.append(path[:])
+            return
+        for i in range(startIndex, 9 - (k - len(path)) + 2):  # 剪枝
+            currentSum += i  # 处理
+            path.append(i)  # 处理
+            self.backtracking(targetSum, k, currentSum, i + 1, path, result)  # 注意i+1调整startIndex
+            currentSum -= i  # 回溯
+            path.pop()  # 回溯
+
+```
+1. currentSum> targetSum剪枝
+2. 9-(k-len(path))+2) : k-len(path) need number of integer
+                       9-: max start place 
+					   +2 start and right exclusive 
+					   
+17. Letter Combinations of a Phone Number
+```python
+class Solution(object):
+    def __init__(self):
+        self.letterMap = [
+            "",     # 0
+            "",     # 1
+            "abc",  # 2
+            "def",  # 3
+            "ghi",  # 4
+            "jkl",  # 5
+            "mno",  # 6
+            "pqrs", # 7
+            "tuv",  # 8
+            "wxyz"  # 9
+        ]
+        self.result = []
+        self.s = ""
+    def letterCombinations(self, digits):
+        """
+        :type digits: str
+        :rtype: List[str]
+        """
+        result = []
+        if len(digits) == 0:
+            return result
+        self.getCombinations(digits, 0, [], result)
+        return result
+ 
+    
+    def getCombinations(self, digits, index, path, result):
+        if index == len(digits):
+            result.append(''.join(path))
+            return
+        digit = int(digits[index])
+        letters = self.letterMap[digit]
+        for letter in letters:
+            path.append(letter)
+            self.getCombinations(digits, index + 1, path, result)
+            path.pop()
+```
+use mapping for letter
+no startIndex, this is combination of different set, not combination inside one set
 
 # 代码随想录 Day 23
+39. Combination Sum
+```python
+class Solution(object):
+    def combinationSum(self, candidates, target):
+        """
+        :type candidates: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        result = []
+        candidates.sort() # ordering
+        self.backtracking(candidates, target, result, [], 0, 0)
+        return result
+
+    def backtracking(self, candidates, target, result, path, startIndex,sum):
+        # if curSum>target:
+        #     return
+        if sum == target:
+            result.append(path[:])
+            return
+        for i in range(startIndex, len(candidates)): # pruning
+            if candidates[i] + sum>target:
+                break
+            sum +=candidates[i]
+            path.append(candidates[i])
+            self.backtracking(candidates, target, result, path, i, sum)
+            path.pop()
+            sum-=candidates[i]
+```
+use sort for security
+40. Combination Sum II
+```python
+class Solution(object):
+    def combinationSum2(self, candidates, target):
+        """
+        :type candidates: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        result = []
+        candidates.sort() # ordering
+        self.backtracking(candidates, target, result, [], 0, 0)
+        return result
+
+    def backtracking(self, candidates, target, result, path, startIndex,sum):
+        # startIndex for pruning
+        if sum == target:
+            result.append(path[:])
+            return
+        for i in range(startIndex, len(candidates)): # pruning
+            # 要对同一树层使用过的元素进行跳过
+            if (i > startIndex and candidates[i] == candidates[i - 1]):
+                continue
+            
+            if candidates[i] + sum>target:
+                break
+            sum +=candidates[i]
+            path.append(candidates[i])
+            self.backtracking(candidates, target, result, path, i+1, sum)
+            path.pop()
+            sum-=candidates[i]
+```
+same level pruning
 
 # 代码随想录 Day 24
+
 
 # 代码随想录 Day 25
 
