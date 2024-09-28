@@ -1493,3 +1493,71 @@ class Solution(object):
 ```python
 ```
 TBD
+
+# 代码随想录 Day 32
+509. Fibonacci Number
+```python
+class Solution(object):
+    def fib(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        #i: order
+        # dp[i]:value
+        dp=[0]*3
+        dp[0]=0
+        dp[1]=1
+        if n==0:
+            return 0 
+        if n==1:
+            return 1
+        for i in range(1,n):
+            dp[2]=dp[0]+dp[1]
+            dp[0]=dp[1]
+            dp[1]=dp[2]
+        return dp[2]
+```
+1. i and dp[i] meaning
+2. iterate formula 
+3. initialize
+4. order of iteration
+5. use example
+
+70. Climbing Stairs
+```python
+class Solution(object):
+    def climbStairs(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        # i: number of steps, dp[i]: ways of get 
+        dp=[0]*2
+        dp[0]=1
+        dp[1]=1
+        
+        if n ==0:
+            return 1
+        if n ==1:
+            return 1
+        for i in range(1,n):
+            sum = dp[1]+dp[0]
+            dp[0]=dp[1]
+            dp[1]=sum
+        return sum
+```
+746. Min Cost Climbing Stairs
+```python
+class Solution(object):
+    def minCostClimbingStairs(self, cost):
+        """
+        :type cost: List[int]
+        :rtype: int
+        """
+        # i : floor, dp[i]:cost to reach i floor
+        dp = [0]*(len(cost)+1)
+        for i in range(2,len(cost)+1):
+            dp[i] = min(dp[i-1]+cost[i-1],dp[i-2]+cost[i-2])
+        return dp[len(cost)]
+```
