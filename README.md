@@ -1262,10 +1262,110 @@ class Solution(object):
             sum-=candidates[i]
 ```
 same level pruning
-
+131. Palindrome Partitioning
+```python
+class Solution(object):
+    def partition(self, s):
+        """
+        :type s: str
+        :rtype: List[List[str]]
+        """
+        result = []
+        self.backtracking(s, 0, [], result)
+        return result
+    def backtracking(self, s, startIndex, path, result):
+        # 如果起始位置已经大于s的大小，说明已经找到了一组分割方案了
+        if startIndex == len(s):
+            result.append(path[:])
+            return 
+        
+        for i in range(startIndex, len(s)):
+            # 判断被截取的这一段子串([start_index, i])是否为回文串
+            # 若反序和正序相同，意味着这是回文串
+            if s[startIndex: i + 1] == s[startIndex: i + 1][::-1]:
+                path.append(s[startIndex:i+1])
+                self.backtracking(s, i+1, path, result)   # 递归纵向遍历：从下一处进行切割，判断其余是否仍为回文串
+                path.pop()             # 回溯
+        
+```
+切割问题可以抽象为组合问题
 ## 代码随想录 Day 24
+93. Restore IP Addresses
+```python
+class Solution(object):
+    def restoreIpAddresses(self, s):
+        """
+        :type s: str
+        :rtype: List[str]
+        """
+        result = []
+        self.backtracking(s, result, [], 0)
+        return result
+    def backtracking(self, s, result, path, startIndex):
+        if len(path) == 4 and startIndex == len(s):
+            result.append(".".join(path))
+            return 
+        if len(path) > 4:  # 剪枝
+            return
+        for i in range(startIndex, min(startIndex + 3, len(s))): # pruning
+            if int(s[startIndex:i+1])<=255:
+                if (i!= startIndex and s[startIndex]!="0") or i == startIndex:
+                    path.append(s[startIndex:i+1])
+                    self.backtracking(s, result, path, i+1)
+                    path.pop()
+```
+2 pruning method
+78. Subsets
+```python
+class Solution(object):
+    def subsets(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        result = []
+        self.backtracking(nums, 0, [], result)
+        return result
+    def backtracking(self, nums, startIndex, path, result):
+        #剩余集合为空停止
+        #不写终止条件，因为本来我们就要遍历整棵树
+        result.append(path[:])
+        if startIndex == len(nums):
+            return
+        for i in range(startIndex, len(nums)):
+            path.append(nums[i])
+            self.backtracking(nums, i + 1, path, result)
+            path.pop()
+```
+append each time
+90. Subsets II
+```python
+class Solution(object):
+    def subsetsWithDup(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        result = []
+        nums.sort()  # Sort the array to ensure duplicates are adjacent
+        self.backtracking(nums, 0, [], result)
+        return result
 
-
+    def backtracking(self, nums, startIndex, path, result):
+        result.append(path[:]) 
+        
+        for i in range(startIndex, len(nums)):
+            # Skip duplicates: If current element is the same as the previous one, skip it
+            if i > startIndex and nums[i] == nums[i - 1]: 
+                continue
+            
+            path.append(nums[i]) 
+            self.backtracking(nums, i + 1, path, result) 
+            path.pop() 
+        
+```
+1. sort first
+2. use i>startIndex to let i == startIndex pass 
 ## 代码随想录 Day 25
 
 ## 代码随想录 Day 27
