@@ -1367,6 +1367,32 @@ class Solution(object):
 1. sort first
 2. use i>startIndex to let i == startIndex pass 
 ## 代码随想录 Day 25
+46. Permutations
+```python
+class Solution(object):
+    def permute(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        result = []
+        self.backtracking(nums, [], [False] * len(nums), result)
+        return result
+
+    def backtracking(self, nums, path, used, result):
+        if len(path) == len(nums):
+            result.append(path[:])
+            return
+        for i in range(len(nums)):
+            if used[i]:
+                continue
+            used[i] = True
+            path.append(nums[i])
+            self.backtracking(nums, path, used, result)
+            path.pop()
+            used[i] = False
+```
+used list for used number
 
 ## 代码随想录 Day 27
 455. Assign Cookies
@@ -1847,3 +1873,91 @@ class Solution(object):
             dp[i] = min(dp[i-1]+cost[i-1],dp[i-2]+cost[i-2])
         return dp[len(cost)]
 ```
+
+## 代码随想录 Day 33
+62. Unique Paths
+```python
+class Solution(object):
+    def uniquePaths(self, m, n):
+        """
+        :type m: int
+        :type n: int
+        :rtype: int
+        """
+        # i: mn, dp[i]: number of paths
+        # dp[m][n]= dp[m-1][n] + dp[m][n-1]
+        dp = [[0 for _ in range(n)] for _ in range(m)]
+        dp[0] = [1]*n
+        for i in range(m):
+            dp[i][0] = 1
+        for i in range(1, m):
+            for l in range(1, n):
+                dp[i][l] = dp[i-1][l]+dp[i][l-1]
+        return dp[m-1][n-1] 
+               
+```
+63. Unique Paths II
+```python
+class Solution(object):
+    def uniquePathsWithObstacles(self, obstacleGrid):
+        """
+        :type obstacleGrid: List[List[int]]
+        :rtype: int
+        """
+        m = len(obstacleGrid)
+        n = len(obstacleGrid[0])
+        dp = [[0 for _ in range(n)] for _ in range(m)]
+        for i in range(m):
+            if obstacleGrid[i][0] == 0:  # 遇到障碍物时，直接退出循环，后面默认都是0
+                dp[i][0] = 1
+            else:
+                break
+        for j in range(n):
+            if obstacleGrid[0][j] == 0:
+                dp[0][j] = 1
+            else:
+                break
+        for i in range(1, m):
+            for l in range(1,len(obstacleGrid[i])):
+                if obstacleGrid[i][l]!= 1:
+                    dp[i][l] = dp[i-1][l]+dp[i][l-1]
+        return dp[m-1][n-1]
+```
+1. initialize should not leave 0 when meet obstacle
+
+96.
+TBD
+343.
+TBD
+## 代码随想录 Day 34
+TBD 
+carl1
+TBD
+carl2
+
+416. Partition Equal Subset Sum
+```python
+class Solution(object):
+    def canPartition(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: bool
+        """
+        # item i, value nums[i], volumn sum
+        
+        double_target = sum(nums)
+        if double_target%2 ==1:
+            return False
+        else:
+            target = double_target//2
+        dp=[0]*(target+1)
+        for i in range(len(nums)):
+            for j in range(target,nums[i]-1,-1):
+                dp[j] = max(dp[j-nums[i]]+nums[i],dp[j])
+
+        if dp[target] == target:
+            return True
+        else:
+            return False
+```
+1. lower bound for inner loop in nums[i]-1, not 0
