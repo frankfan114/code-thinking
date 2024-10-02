@@ -1065,15 +1065,241 @@ class Solution:
 ```
 recursive
 use pointer to add node
+107. Binary Tree Level Order Traversal II
+```python
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def levelOrderBottom(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[List[int]]
+        """
+        if not root:
+            return []
+        queue = collections.deque([root])
+        result = []
+        while queue:
+            level = []
+            for _ in range(len(queue)):
+                cur = queue.popleft()
+                level.append(cur.val)
+                if cur.left:
+                    queue.append(cur.left)
+                if cur.right:
+                    queue.append(cur.right)
+            result.append(level)
+        return result[::-1]
+```
+199. Binary Tree Right Side View
+```python
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def rightSideView(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[int]
+        """
+        if not root:
+            return []
+        result = []
+        queue = collections.deque([root])
+        while queue:
+            level = []
+            for _ in range(len(queue)):
+                cur = queue.popleft()
+                level.append(cur.val)
+                if cur.right:
+                    queue.append(cur.right)
+                if cur.left:
+                    queue.append(cur.left)
+            result.append(level[0])
+        return result
+```
+637. Average of Levels in Binary Tree
+```python
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def averageOfLevels(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[float]
+        """
+        if not root:
+            return []
+        result = []
+        queue = collections.deque([root])
+        while queue:
+            level=[]
+            for _ in range(len(queue)):
+                cur = queue.popleft()
+                level.append(cur.val)
+                if cur.left:
+                    queue.append(cur.left)
+                if cur.right:
+                    queue.append(cur.right)
+                
+            average = float(sum(level)) / len(level) #
+            result.append(round(average, 5))         #a third intermediate value influnence the result
+        return result
+```
 
+TBD
+429
+```python
+```
+515
+116
+117
+104
+111
 ## 代码随想录 Day 14
+226. Invert Binary Tree
+```python
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def invertTree(self, root):
+        """
+        :type root: TreeNode
+        :rtype: TreeNode
+        """
+        queue= collections.deque([root])
+        while queue:
+            for _ in range(len(queue)):
+                cur = queue.popleft()
+                if cur: # avoid none type 
+                    cur.left, cur.right = cur.right, cur.left
+                    if cur.left:
+                        queue.append(cur.left)
+                    if cur.right:
+                        queue.append(cur.right)
+        return root
+```
+(breath first )
+check node not NULL first 
+101. Symmetric Tree
+```python
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def isSymmetric(self, root):
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+        if not root:
+            return False
+        queue=collections.deque()
+        queue.append(root.left)
+        queue.append(root.right)
+        while queue:
+            leftNode = queue.popleft()
+            rightNode = queue.popleft()
+            if rightNode == None and leftNode == None:
+                continue
+            if (rightNode !=None and leftNode == None) or (rightNode ==None and leftNode != None) or leftNode.val != rightNode.val:
+                return False
+            queue.append(leftNode.left)
+            queue.append(rightNode.right)
+            queue.append(leftNode.right)
+            queue.append(rightNode.left)
+        return True
+```
+depth first
+104. Maximum Depth of Binary Tree
+```python
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def maxDepth(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        return self.getdepth(root)
+        
+    def getdepth(self, node):
+        if not node:
+            return 0
+        leftheight = self.getdepth(node.left) #左
+        rightheight = self.getdepth(node.right) #右
+        height = 1 + max(leftheight, rightheight) #中
+        return height
+```
+559 
+TBD
+111. Minimum Depth of Binary Tree
+```python
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def minDepth(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        if not root:
+            return 0
+        depth = 0
+        queue = collections.deque([root])
+        
+        while queue:
+            depth += 1 
+            for _ in range(len(queue)):
+                node = queue.popleft()
+                
+                if not node.left and not node.right:
+                    return depth
+            
+                if node.left:
+                    queue.append(node.left)
+                    
+                if node.right:
+                    queue.append(node.right)
+
+        return depth
+```
+when meet a leaf, that means the shortest depth from root
 ## 代码随想录 Day 15
 ## 代码随想录 Day 16
+
 ## 代码随想录 Day 17
 ## 代码随想录 Day 18
 
 ## 代码随想录 Day 20
 ## 代码随想录 Day 21
+
 ## 代码随想录 Day 22
 77. Combinations
 ```python
@@ -1367,6 +1593,12 @@ class Solution(object):
 1. sort first
 2. use i>startIndex to let i == startIndex pass 
 ## 代码随想录 Day 25
+491. Non-decreasing Subsequences
+TBD
+```python
+
+```
+
 46. Permutations
 ```python
 class Solution(object):
@@ -1394,6 +1626,39 @@ class Solution(object):
 ```
 used list for used number
 
+47. Permutations II
+```python
+class Solution(object):
+    def permuteUnique(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        nums.sort()
+        result = []
+        self.backtracking(nums, [], [False] * len(nums), result)
+        return result
+
+    def backtracking(self, nums, path, used, result):
+        if len(path) == len(nums):
+            result.append(path[:])
+            return
+        for i in range(len(nums)):
+            if used[i] or ((i > 0 and nums[i] == nums[i - 1] and used[i - 1])): # duplicate case
+                #used[i]= True
+                continue
+            used[i]=True
+            path.append(nums[i])
+            self.backtracking(nums, path, used, result)
+            path.pop()
+            used[i] = False
+```
+ ((i > 0 and nums[i] == nums[i - 1] and used[i - 1])
+ not used[i-1]: level pruning
+ used[i-1]: branch pruning
+ 1a 1b 2 
+ 1b 1a 2
+ same effect 树层上去重效率更高
 ## 代码随想录 Day 27
 455. Assign Cookies
 ```python
