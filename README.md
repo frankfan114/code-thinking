@@ -1292,6 +1292,147 @@ class Solution(object):
 ```
 when meet a leaf, that means the shortest depth from root
 ## 代码随想录 Day 15
+110. Balanced Binary Tree
+```python
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def isBalanced(self, root):
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+        result = self.getHeight(root)
+        if result == -1:
+            return False
+        else:
+            return True
+
+    def getHeight(self, node):
+        if node == None:
+            return 0 
+        
+        leftHeight = self.getHeight(node.left)
+        if leftHeight == -1:
+            return -1
+        rightHeight = self.getHeight(node.right)
+        if rightHeight ==-1:
+            return -1
+
+        if leftHeight- rightHeight >1 or leftHeight- rightHeight <-1:
+            return -1
+        else:
+            return 1+max(leftHeight, rightHeight)
+```
+因为求深度可以从上到下去查 所以需要前序遍历（中左右），而高度只能从下到上去查，所以只能后序遍历（左右中）
+TBD iterative method
+257. Binary Tree Paths
+```python
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def binaryTreePaths(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[str]
+        """
+        result = []
+        self.pathfind(root, result, [])
+        return result
+    
+    def pathfind(self, node, result, path):
+        path.append(str(node.val))
+        if node.left == None and node.right == None:
+            result.append('->'.join(path))
+            return 
+        if node.left:
+            #self.pathfind(node.left,result,path)
+            self.pathfind(node.left,result,path[:])
+        if node.right:
+            self.pathfind(node.right,result,path[:]) 
+```
+difference between path and path[:]
+path: original refernce 
+path[:]: shallow copy
+
+404. Sum of Left Leaves
+```python
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def sumOfLeftLeaves(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        return self.sumLeft(root, 0)
+    
+    def sumLeft(self, node, sum):
+        # Base case: if the node is None, return the current sum
+        if node is None:
+            return sum
+
+        # Check if the left child is a leaf
+        if node.left and not node.left.left and not node.left.right:
+            sum += node.left.val
+        
+        # Recur for left and right subtrees, passing the current sum
+        sum = self.sumLeft(node.left, sum)
+        sum = self.sumLeft(node.right, sum)
+        
+        return sum
+```
+only left leave take into account
+513. Find Bottom Left Tree Value
+```python
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def findBottomLeftValue(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        value, depth = self.leftValue(root, 0)
+        return value
+
+    def leftValue(self, node, depth):
+        if node.left == None and node.right == None:
+            return node.val, depth
+        
+        if node.left:
+            l_value, l_depth = self.leftValue(node.left, depth+1)
+        if node.right:
+            r_value, r_depth = self.leftValue(node.right, depth+1)
+
+        if node.left and node.right:
+            if r_depth > l_depth:
+                return  r_value, r_depth
+            else:
+                return l_value, l_depth
+        elif node.left and not node.right:
+            return l_value, l_depth
+        elif not node.left and  node.right:
+            return  r_value, r_depth
+            
+```
+
 ## 代码随想录 Day 16
 
 ## 代码随想录 Day 17
