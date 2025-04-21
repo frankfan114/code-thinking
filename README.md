@@ -137,6 +137,45 @@ class Solution(object):
 ```
 the offset is 1, as the starty and startx also move forward in each layer
 
+```cpp
+class Solution {
+public:
+    vector<vector<int>> generateMatrix(int n) {
+        vector<vector<int>> result(n,vector<int>(n,n*n));
+        int start_x=0,  start_y=0;
+        int loop= n / 2;
+        int i,j;
+        int offset = 1;
+        int count =1;
+        while(loop--){
+            i= start_x;
+            j=start_y;
+            for (j; j<n-offset;j++){
+                result[i][j]=count++;
+            }
+
+            for (i;i<n-offset;i++){
+                result[i][j]=count++;
+            }
+
+            for (j;j>start_y;j--){ // current start
+                result[i][j]=count++;
+            }
+
+            for (i;i>start_x;i--){ // current start
+                result[i][j]=count++;
+            }
+
+            offset++;
+            start_x++;
+            start_y++;
+        }
+        return result;
+    }
+};
+```
+每次loop应该会到这层开始的地方，而不是（0，0）
+
 区间和
 
 TBD
