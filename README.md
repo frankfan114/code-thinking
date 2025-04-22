@@ -209,6 +209,40 @@ class Solution(object):
 ```
 current= current.next in else condition for 2 reasons: 1. avoid skipping continuous val
                                                        2. avoid empty node, Nodetype Error
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeElements(ListNode* head, int val) {
+        ListNode* dummy = new ListNode(0); // initiate with 0 
+        dummy->next = head;
+        ListNode* current = dummy;
+        while(current->next != NULL ){
+            if(current->next->val == val){
+
+                ListNode* temp = current->next->next;
+                delete current->next;
+                current->next=temp;
+            }
+            else{
+                current= current->next;
+            }
+        } 
+        ListNode* result = dummy->next;
+        delete dummy; // for mem leakage
+        return result;
+    }
+};
+```
    
 707.设计链表  
 ```python
