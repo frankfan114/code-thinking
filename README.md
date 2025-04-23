@@ -343,6 +343,115 @@ class MyLinkedList(object):
 the condtion error for add at index, should only include = and < size
 use cur to transverse, so that the structure of self.head won't change 
 
+```cpp
+class MyLinkedList {
+
+private:
+    struct LinkedNode{
+        int val;
+        LinkedNode* next;
+        LinkedNode(int val):val(val),next(nullptr){}
+    };
+    
+    LinkedNode* _dummy;
+    int _size;
+    
+
+public:
+    
+    MyLinkedList() {
+        _dummy = new LinkedNode(0);
+        _size = 0; 
+    }
+    
+    int get(int index) {
+        if (index <0 || index >= _size){
+            return -1;
+        }
+        else{
+            LinkedNode* current = _dummy->next;
+            for (int i = 0; i < index; ++i) {
+                current = current->next;
+            }
+            return current->val;
+        }
+    }
+    
+    void addAtHead(int val) {
+        LinkedNode* temp = _dummy->next;
+        LinkedNode* first = new LinkedNode(val);
+        first->next=temp;
+        _dummy->next=first; 
+        _size+=1;
+    }
+    
+    void addAtTail(int val) {
+        LinkedNode* current = _dummy;
+        while(current->next){
+            current=current->next;
+        }
+        LinkedNode* last = new LinkedNode(val);
+        current->next = last;
+        _size+=1;
+    }
+    
+    void addAtIndex(int index, int val) {
+        if(index <= _size ){
+            if(index == 0){
+                addAtHead(val);
+            }
+            else if(index == _size){
+                addAtTail(val);
+            }
+            else{
+                LinkedNode* current =_dummy;
+                while(index-1>=0){
+                    current= current->next;
+                    index-=1;
+                }
+                LinkedNode* temp = current->next;
+                LinkedNode* added = new LinkedNode(val);
+                added->next= temp;
+                current->next= added;
+                _size +=1;
+
+            }
+        }
+    }
+    
+    void deleteAtIndex(int index) {
+    if (index < _size) {
+        LinkedNode* current = _dummy;
+        for (int i = 0; i < index; ++i) {
+            current = current->next;
+        }
+        LinkedNode* deleted = current->next;
+        current->next = deleted->next;
+        delete deleted;
+    	//delete命令指示释放了tmp指针原本所指的那部分内存，
+        //被delete后的指针tmp的值（地址）并非就是NULL，而是随机值。也就是被delete后，
+        //如果不再加上一句tmp=nullptr,tmp会成为乱指的野指针
+        //如果之后的程序不小心使用了tmp，会指向难以预想的内存空间
+        deleted =nullptr;
+        _size--;
+        
+    }
+}
+
+};
+
+/**
+ * Your MyLinkedList object will be instantiated and called as such:
+ * MyLinkedList* obj = new MyLinkedList();
+ * int param_1 = obj->get(index);
+ * obj->addAtHead(val);
+ * obj->addAtTail(val);
+ * obj->addAtIndex(index,val);
+ * obj->deleteAtIndex(index);
+ */
+```
+
+
 203 翻转链表
 ```python
 # Definition for singly-linked list.
