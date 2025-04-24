@@ -452,7 +452,7 @@ public:
 ```
 
 
-203 翻转链表
+206. 翻转链表
 ```python
 # Definition for singly-linked list.
 # class ListNode(object):
@@ -476,6 +476,64 @@ class Solution(object):
 ```
 condition is cur instead of cur.next, as it don't need to check the next existence, just first one 
 
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    // 2 pointer
+
+    // ListNode* reverseList(ListNode* head) {
+    //         
+    //     ListNode* prev = nullptr;
+    //     //
+    //     ListNode* current = head;
+    //     while(current){
+    //         ListNode* tmp = current->next;
+    //         current->next=prev;
+    //         //
+    //         prev = current;
+    //         // move up
+    //         current =tmp;
+
+    //     }
+    //     return prev;
+
+    // }
+
+    //resursive
+
+    // ListNode* reverse(ListNode* prev, ListNode* cur){
+    //     if(cur==nullptr) return prev;
+    //     ListNode* tmp = cur->next;
+    //     cur->next = prev;
+    //     return reverse(cur,tmp);
+    // }
+    // ListNode* reverseList(ListNode* head) {
+    //     return reverse(nullptr, head);
+    // }
+
+    //from back to front
+    ListNode* reverseList(ListNode* head) {
+        if(head==nullptr) return nullptr;
+        if(head->next == nullptr) return head;
+
+        ListNode* last = reverseList(head->next);
+        //3->4<-5
+        head->next->next=head;
+        head->next=nullptr;
+        return last;
+    }
+};
+```
 
 ## 代码随想录 Day 4
 24. Swap Nodes in Pairs
