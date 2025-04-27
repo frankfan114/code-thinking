@@ -564,6 +564,52 @@ class Solution(object):
 ```
 as long as 1 and 2 in sequence, 312 and 123 both work
 
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    // iterative
+    
+    ListNode* swap(ListNode* current){
+        if (current->next == nullptr || current->next->next == nullptr) {
+            return current;
+        }
+        ListNode* second = current->next->next;
+        ListNode* first = current->next;
+        
+        first->next=second->next;
+        second->next=first;
+
+        current->next = second; // missing the link of current to the swapped
+
+        return swap(first);
+        //return current;
+    }
+
+    ListNode* swapPairs(ListNode* head) {
+         
+        ListNode* dummy = new ListNode(0);
+        dummy->next = head;
+        swap(dummy);
+        
+        // safety
+        ListNode* result = dummy->next;
+        delete dummy;
+        return result;
+        
+    }
+};
+```
+
 19. Remove Nth Node From End of List
 ```python
 # Definition for singly-linked list.
@@ -592,6 +638,46 @@ class Solution(object):
         
 ```
 if slow= dum.next, [1], n=1 leads to None = None.next, error
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+    
+public:
+
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        ListNode* dummy = new ListNode(0);
+        dummy->next = head;
+        ListNode* slow = dummy;
+        ListNode* fast = dummy;
+        while(n--){
+            fast = fast->next;
+        }     
+        while(fast->next){
+            slow=slow->next;
+            fast=fast->next;
+        }
+        ListNode* tmp = slow->next;
+        slow->next=tmp->next;
+        delete tmp;
+        ListNode* result =dummy->next;
+        delete dummy;
+        return result;
+
+        // maintain 2 poitner, slow one delay by n
+
+    }
+};
+```
 
 160. Intersection of Two Linked Lists
 ```python
@@ -639,6 +725,39 @@ class Solution(object):
 ```
 other method: if lenb > lena, assign a to b, b to a to reduce repeatence 
             use proprotional method, 2*3 = 3*2
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        if (!headA || !headB) return nullptr;
+        
+        ListNode* pA = headA;
+        ListNode* pB = headB;
+        
+        while (pA != pB) {
+            pA = (pA == nullptr) ? headB : pA->next;
+            pB = (pB == nullptr) ? headA : pB->next;
+        }
+        
+        return pA; // could be nullptr if no intersection
+    }
+
+    // if reach, then m+n=n+m
+};
+
+    
+
+```
 142. Linked List Cycle II
 ```python
 # Definition for singly-linked list.
@@ -673,6 +792,49 @@ class Solution(object):
 ```
 the incremnet should be placed first, otherwise it will be always true as slow and fast start the same node
 set method really good
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+    
+    if (!head || !head->next) return nullptr;
+        
+        ListNode* slow = head;
+        ListNode* fast = head;
+        
+        // Step 1: Detect if cycle exists
+        while (fast && fast->next) {
+            slow = slow->next;
+            fast = fast->next->next;
+            
+            if (slow == fast) {
+                // Step 2: Cycle detected, now find the start
+                ListNode* entry = head;
+                while (entry != slow) {
+                    entry = entry->next;
+                    slow = slow->next;
+                }
+                return entry; // the start of the cycle
+            }
+        }
+        
+        // No cycle
+        return nullptr;
+
+
+    // length before enter cycle = n*C - length after enter cycle      
+    }
+};
+```
 
 ## 代码随想录 Day 6
 242.有效的字母异位词 
