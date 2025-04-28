@@ -857,6 +857,30 @@ class Solution(object):
             return False
 
 ```
+```cpp
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        int record[26] = {0};
+        for (int i = 0; i < s.size(); i++) {
+            // 并不需要记住字符a的ASCII，只要求出一个相对数值就可以了
+            record[s[i] - 'a']++;
+        }
+        for (int i = 0; i < t.size(); i++) {
+            record[t[i] - 'a']--;
+        }
+        for (int i = 0; i < 26; i++) {
+            if (record[i] != 0) {
+                // record数组如果有的元素不为零0，说明字符串s和t 一定是谁多了字符或者谁少了字符。
+                return false;
+            }
+        }
+        // record数组所有元素都为零0，说明字符串s和t是字母异位词
+        return true;
+    }
+};
+```
+
 349. 两个数组的交集 
 ```python
 class Solution(object):
@@ -879,6 +903,26 @@ class Solution(object):
         return list(res)
         
 ```
+
+```cpp
+class Solution {
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        unordered_set<int> result_set; // 存放结果，之所以用set是为了给结果集去重
+        unordered_set<int> nums_set(nums1.begin(), nums1.end());
+        for (int num : nums2) {
+            // 发现nums2的元素 在nums_set里又出现过
+            if (nums_set.find(num) != nums_set.end()) { //If it does not find it, find() returns nums_set.end(), which is a special iterator meaning "past the end", "not found".
+                result_set.insert(num);
+            }
+        }
+        return vector<int>(result_set.begin(), result_set.end());
+    }
+};
+```
+Returning vector<int> is how C++ "returns an array" dynamically and safely.
+
+
 202. 快乐数
 ```python
 class Solution(object):
