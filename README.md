@@ -951,6 +951,41 @@ class Solution(object):
 ```
 1 loop -> sum will repeat
 2 inital n should be include to reduce repetance, as if it's get again, there's definitely a loop
+
+```cpp
+class Solution {
+public:
+    int sumOfSquare(int n){
+        int sum = 0;
+        
+        while(n){
+            sum += (n%10)*(n%10);
+            n/=10;
+        }
+        // sum+= n*n;
+        return sum;
+    }
+    bool isHappy(int n) {
+        unordered_set<int> set;
+        while(1){
+            int sum = sumOfSquare(n);
+            if (sum == 1){
+                return true;
+            }
+            
+            if (set.find(sum) != set.end()) {
+                return false;
+            }
+            set.insert(sum);
+            n= sum; // let it looping
+
+        }      
+    }
+};
+
+// not use n%10 as the condition in the sum of square, as it will treat wrong for 10, add order: from top digit to bottom digit
+```
+
 1. 两数之和   
 ```python
 class Solution(object):
@@ -968,6 +1003,25 @@ class Solution(object):
                 record[nums[i]] = i
 ```
 
+```cpp
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        unordered_map<int, int > map;
+        for (int i=0; i< nums.size(); i++){
+            int dif = target - nums[i];
+            auto it = map.find(dif); 
+            if( it != map.end()){
+                return {(it->second), i};
+            }
+            map.insert(pair<int, int>(nums[i],i));
+        }
+        return {};
+    }
+};
+
+// auto: auto give the type that has initializer in front
+```
 ## 代码随想录 Day 7
 454.四数相加II 
 ```python
