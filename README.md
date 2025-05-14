@@ -1053,7 +1053,46 @@ class Solution(object):
                     occ +=record[-sum1]
         return occ
 ```
+
 the value for sum of a+b is the count of a+b in first two array
+
+
+```cpp
+class Solution {
+public:
+    int fourSumCount(vector<int>& nums1, vector<int>& nums2, vector<int>& nums3, vector<int>& nums4) {
+        unordered_map<int, int> map;
+        int sum=0;
+        int times = 0;
+        // int a: nums1
+        for (int i =0; i<nums1.size(); i++){
+            for (int j =0; j<nums2.size(); j++){
+                sum = nums1[i]+nums2[j];
+                
+                map[sum]++;
+                
+            }
+        }
+
+        for (int i =0; i<nums3.size(); i++){
+            for (int j =0; j<nums4.size(); j++){
+                sum = nums3[i]+nums4[j];
+                if(map.find(-sum) != map.end()){
+                    times+= map.find(-sum)->second;   
+                }
+                
+            }
+        }
+        return times;
+
+    }
+};
+
+// a+b = b+c, a+c = b+d
+// key: sum, value: the times of the sum
+// !=map.end(): find the object
+```
+
 383. 赎金信 
 ```python
 ransom_count = [0] * 26
@@ -1065,6 +1104,31 @@ ransom_count = [0] * 26
         return all(ransom_count[i] <= magazine_count[i] for i in range(26))
 ```
 array has lower space and time needed compared to map
+
+```cpp
+class Solution {
+public:
+    bool canConstruct(string ransomNote, string magazine) {
+        int record[26]= {0};
+        if (ransomNote.size()> magazine.size()){
+            return false;
+        }
+        for(char l: magazine){
+            record[l-'a']++;
+        }
+        for(char m : ransomNote){
+            record[m-'a']--;
+            if (record[m-'a']<0){
+                return false;
+            }
+        }
+        return true;
+    }
+};
+
+// if output need has larger size than input, return false 
+```
+
 15. 三数之和 
 ```python
 class Solution(object):
@@ -1106,6 +1170,61 @@ class Solution(object):
 
 TBD dict version   
 
+```cpp
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        vector<vector<int>> result;
+        sort(nums.begin(), nums.end());
+        // 找出a + b + c = 0
+        // a = nums[i], b = nums[left], c = nums[right]
+        for (int i = 0; i < nums.size(); i++) {
+            // 排序之后如果第一个元素已经大于零，那么无论如何组合都不可能凑成三元组，直接返回结果就可以了
+            if (nums[i] > 0) {
+                return result;
+            }
+            // 错误去重a方法，将会漏掉-1,-1,2 这种情况
+            /*
+            if (nums[i] == nums[i + 1]) {
+                continue;
+            }
+            */
+            // 正确去重a方法
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
+            int left = i + 1;
+            int right = nums.size() - 1;
+            while (right > left) {
+                // 去重复逻辑如果放在这里，0，0，0 的情况，可能直接导致 right<=left 了，从而漏掉了 0,0,0 这种三元组
+                /*
+                while (right > left && nums[right] == nums[right - 1]) right--;
+                while (right > left && nums[left] == nums[left + 1]) left++;
+                */
+                if (nums[i] + nums[left] + nums[right] > 0) right--;
+                else if (nums[i] + nums[left] + nums[right] < 0) left++;
+                else {
+                    result.push_back(vector<int>{nums[i], nums[left], nums[right]});
+                    // 去重逻辑应该放在找到一个三元组之后，对b 和 c去重
+                    while (right > left && nums[right] == nums[right - 1]) right--;
+                    while (right > left && nums[left] == nums[left + 1]) left++;
+
+                    // 找到答案时，双指针同时收缩
+                    right--;
+                    left++;
+                }
+            }
+
+        }
+        return result;
+    }
+};
+
+// vector<int>: no hash specialization
+// if n <3, return 
+// fix 2, move 1 will miss item
+
+```
 18. 四数之和 
 ```python
 class Solution(object):
