@@ -1268,6 +1268,78 @@ class Solution(object):
         return result
 ```
 
+```cpp
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        vector<vector<int>> result;
+        sort(nums.begin(), nums.end());
+        int n = nums.size();
+        
+        for (int i = 0; i < n - 3; i++) {
+            // skip duplicate i’s
+            if (i > 0 && nums[i] == nums[i-1]) continue;
+            // if smallest possible 4-sum > target, we're done
+            long long min_i = (long long)nums[i]
+                            + nums[i+1]
+                            + nums[i+2]
+                            + nums[i+3];
+            if (min_i > target) break;
+            // if largest possible 4-sum < target, skip ahead
+            long long max_i = (long long)nums[i]
+                            + nums[n-1]
+                            + nums[n-2]
+                            + nums[n-3];
+            if (max_i < target) continue;
+            
+            for (int j = i + 1; j < n - 2; j++) {
+                // skip duplicate j’s
+                if (j > i + 1 && nums[j] == nums[j-1]) continue;
+                // prune by 3-sum bounds
+                long long min_j = (long long)nums[i]
+                                + nums[j]
+                                + nums[j+1]
+                                + nums[j+2];
+                if (min_j > target) break;
+                long long max_j = (long long)nums[i]
+                                + nums[j]
+                                + nums[n-1]
+                                + nums[n-2];
+                if (max_j < target) continue;
+                
+                int left = j + 1, right = n - 1;
+                while (left < right) {
+                    long long sum = (long long)nums[i]
+                                  + nums[j]
+                                  + nums[left]
+                                  + nums[right];
+                    if (sum < target) {
+                        left++;
+                    }
+                    else if (sum > target) {
+                        right--;
+                    }
+                    else {
+                        result.push_back({nums[i],
+                                          nums[j],
+                                          nums[left],
+                                          nums[right]});
+                        // skip duplicates on left/right
+                        while (left < right && nums[left] == nums[left+1])  left++;
+                        while (left < right && nums[right] == nums[right-1]) right--;
+                        left++;
+                        right--;
+                    }
+                }
+            }
+        }
+        
+        return result;
+    }
+};
+
+```
+
 ## 代码随想录 Day 8
 344.反转字符串
 ```python
