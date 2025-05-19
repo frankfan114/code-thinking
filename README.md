@@ -1440,6 +1440,54 @@ class Solution(object):
         s = ' '.join(ws) 
         return s
 ```
+```cpp
+class Solution {
+public:
+    void removeExtraSpaces(string& s) {
+        int slow = 0;
+        for(int i=0; i<s.size(); i++){
+            if(s[i] != ' '){
+                // If slow != 0, we have already written at least one word;
+                // so before writing this new word, insert exactly one space.
+                // (This also prevents a leading space.)
+                if (slow != 0) 
+                    s[slow++] = ' ';
+                
+                while (i < s.size() && s[i] != ' ') {
+                   s[slow++] = s[i++];
+                }
+            }
+        }
+        return s.resize(slow); 
+    }
+
+    void reverse(string& s, int start, int end) {
+        for (int i = start, j = end; i < j; i++, j--) {
+            swap(s[i], s[j]);
+        }   
+    }
+
+    string reverseWords(string s) {
+        removeExtraSpaces(s);
+        reverse(s,0,s.size()-1);
+
+        int i=0;
+        for (int j=0; j<=s.size(); j++){
+            if(s[j] == ' '|| j == s.size()){
+                reverse(s, i, j-1);
+                i=j+1;
+            }
+        }
+        
+        return s;
+    }
+};
+
+// when j==n, s[n] out of bound, leading to undefined behavior
+
+// 整个字符串都反转过来，那么单词的顺序指定是倒序了，只不过单词本身也倒序了，那么再把单词反转一下，单词不就正过来了。
+```
+
 1 delete space 2 reverse 3 recombine
 卡码网：55.右旋转字符串
 TBD
