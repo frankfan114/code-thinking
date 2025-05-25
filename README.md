@@ -1492,7 +1492,55 @@ public:
 卡码网：55.右旋转字符串
 TBD
 28. 实现 strStr()
-```python
+```cpp
+class Solution {
+public:
+    // aabaaf
+    // 01212
+    void getNext(int* next, string& needle){
+        int j = 0;
+        // i: suffix end
+        // j: prefix end
+        // 1. initialization, differnt, same, update
+        next[0]= j; 
+        for(int i=1; i<needle.size();i++){
+            
+            while(needle[j] != needle[i] && j>0){
+                j=next[j-1];
+            }
+
+            if(needle[i]==needle[j]){
+                j++;
+            }
+            next[i]=j;
+        }
+    }
+
+    int strStr(string haystack, string needle) {
+        if (needle.size() == 0) {
+            return 0;
+        }
+		vector<int> next(needle.size());
+		getNext(&next[0], needle);
+
+        int j=0;
+        for (int i=0; i<haystack.size(); i++){
+            while(needle[j] != haystack[i] && j> 0){
+                j=next[j-1];
+            }
+            if(needle[j]== haystack[i]){
+                j++;
+            }
+            if(j== needle.size() ){
+                return i-j+1;
+            }
+        }
+        return -1;
+        
+        
+    }
+};
+
 ```
 TBD
 459.重复的子字符串
