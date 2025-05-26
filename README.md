@@ -1542,11 +1542,45 @@ public:
 };
 
 ```
-TBD
+
 459.重复的子字符串
-```python
+```cpp
+class Solution {
+public:
+    //当 最长相等前后缀不包含的子串的长度 可以被 字符串s的长度整除，那么不包含的子串 就是s的最小重复子串。
+    //next[len - 1] != 0，则说明字符串有最长相同的前后缀
+    //最长相等前后缀的长度为：next[len - 1]
+    //len - next[len - 1] 是最长相等前后缀不包含的子串的长度。
+
+    void getNext (int* next, const string& s){
+        next[0] = 0;
+        int j = 0;
+        for(int i = 1;i < s.size(); i++){
+            while(j > 0 && s[i] != s[j]) {
+                j = next[j - 1];
+            }
+            if(s[i] == s[j]) {
+                j++;
+            }
+            next[i] = j;
+        }
+    }
+
+    bool repeatedSubstringPattern(string s) {
+        if (s.size() == 0) {
+            return false;
+        }
+        int next[s.size()];
+        getNext(next, s);
+        int len = s.size();
+        if (next[len - 1] != 0 && len % (len - (next[len - 1] )) == 0) {
+            return true;
+        }
+        return false;
+       
+    }
+};
 ```
-TBD
 ## 代码随想录 Day 10
 232.用栈实现队列 
 ```python
