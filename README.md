@@ -1640,6 +1640,66 @@ class MyQueue(object):
 # param_3 = obj.peek()
 # param_4 = obj.empty()
 ```
+cpp```
+class MyQueue {
+public:
+    stack<int> stIn;
+    stack<int> stOut;
+    MyQueue() {
+        
+    }
+    
+    void push(int x) {
+        stIn.push(x);
+    }
+    
+    int pop() {
+        if(stOut.empty()){
+  
+            while(!stIn.empty()){
+                stOut.push(stIn.top());
+                stIn.pop();
+            }
+            
+        }
+        int res = stOut.top();
+        stOut.pop();
+        return  res;
+        
+    }
+    
+    int peek() {
+        if(stOut.empty()){
+            while(!stIn.empty()){
+
+                stOut.push(stIn.top());
+                stIn.pop();
+            }
+        }
+        return stOut.top();
+    }
+    
+    bool empty() {
+        return stOut.empty() && stIn.empty();
+    }
+};
+
+/**
+ * Your MyQueue object will be instantiated and called as such:
+ * MyQueue* obj = new MyQueue();
+ * obj->push(x);
+ * int param_2 = obj->pop();
+ * int param_3 = obj->peek();
+ * bool param_4 = obj->empty();
+ */
+
+ // pop not return element 
+ // int res = this->pop(); 
+ // 直接使用已有的pop函数
+     
+```
+
+
 use 2 stack, 1 for in and 1 for out
 225. 用队列实现栈 
 ```python
@@ -1703,6 +1763,57 @@ class MyStack(object):
 # param_4 = obj.empty()
 ```
 FIF0 have feature that, the order won't reverse if you put them to a new queue
+
+```cpp
+class MyStack {
+
+public:
+    queue<int> que;
+
+    MyStack() {
+        
+    }
+    
+    void push(int x) {
+        que.push(x);    
+    }
+    
+    int pop() {
+        int size = que.size();
+        while(size>1){
+            int tmp = que.front();
+            que.pop();
+            que.push(tmp);
+            size--; 
+        }
+        int res = que.front();
+        que.pop();
+        return res;
+    }
+    
+    int top() {
+        int res= this->pop();
+        this->push(res);
+        return res;
+    }
+    
+    bool empty() {
+        return que.empty();
+    }
+};
+
+/**
+ * Your MyStack object will be instantiated and called as such:
+ * MyStack* obj = new MyStack();
+ * obj->push(x);
+ * int param_2 = obj->pop();
+ * int param_3 = obj->top();
+ * bool param_4 = obj->empty();
+ */
+
+ // update size in pop
+```
+
 20. 有效的括号 
 ```python
 class Solution(object):
@@ -1729,6 +1840,31 @@ class Solution(object):
             return True
 ```
 3 possible conditions: 1. left more, 2. right more, 3. type not meet
+
+```cpp
+class Solution {
+public:
+    bool isValid(string s) {
+        if (s.size() % 2 != 0) return false; // 如果s的长度为奇数，一定不符合要求
+        stack<char> st;
+
+        for (int i = 0; i < s.size(); i++) {
+            if (s[i] == '(') st.push(')');
+            else if (s[i] == '{') st.push('}');
+            else if (s[i] == '[') st.push(']');
+            // 第三种情况：遍历字符串匹配的过程中，栈已经为空了，没有匹配的字符了，说明右括号没有找到对应的左括号 return false
+            // 第二种情况：遍历字符串匹配的过程中，发现栈里没有我们要匹配的字符。所以return false
+            else if (st.empty() || st.top() != s[i]) return false;
+            else st.pop(); // st.top() 与 s[i]相等，栈弹出元素
+        }
+        // 第一种情况：此时我们已经遍历完了字符串，但是栈不为空，说明有相应的左括号没有右括号来匹配，所以return false，否则就return true
+        return st.empty();
+    }
+};
+
+// 3 conditions 
+```
+
 1047. 删除字符串中的所有相邻重复项 
 ```python
 class Solution(object):
@@ -1744,6 +1880,43 @@ class Solution(object):
             else:
                 stack.append(i)
         return ''.join(stack)
+```
+
+```cpp
+class Solution {
+public:
+    string removeDuplicates(string s) {
+        // stack<char> st;
+        // for(char i: s){
+        //     if(st.empty()|| st.top() != i){
+        //         st.push(i);
+        //     }
+        //     else if(st.top() == i){
+        //         st.pop();
+        //     }
+        // } 
+        // //
+        // string result = "";
+        // while (!st.empty()) { // 将栈中元素放到result字符串汇总
+        //     result += st.top();
+        //     st.pop();
+        // }
+        // reverse (result.begin(), result.end()); // 此时字符串需要反转一下
+        // return result;
+        string result;
+        for(char i : s) {
+            if(result.empty() || result.back() != i) {
+                result.push_back(i);
+            }
+            else {
+                result.pop_back();
+            }
+        }
+        return result;
+    }
+};
+
+//字符串直接作为栈
 ```
 
 ## 代码随想录 Day 11 (07/09/24)
@@ -1773,6 +1946,34 @@ class Solution(object):
         return stack.pop()
 ```
 divisioin need special treat for integer
+
+```cpp
+class Solution {
+public:
+    int evalRPN(vector<string>& tokens) {
+        // 力扣修改了后台测试数据，需要用longlong
+        stack<long long> st; 
+        for (int i = 0; i < tokens.size(); i++) {
+            if (tokens[i] == "+" || tokens[i] == "-" || tokens[i] == "*" || tokens[i] == "/") {
+                long long num1 = st.top();
+                st.pop();
+                long long num2 = st.top();
+                st.pop();
+                if (tokens[i] == "+") st.push(num2 + num1);
+                if (tokens[i] == "-") st.push(num2 - num1);
+                if (tokens[i] == "*") st.push(num2 * num1);
+                if (tokens[i] == "/") st.push(num2 / num1);
+            } else {
+                st.push(stoll(tokens[i]));
+            }
+        }
+
+        long long result = st.top();
+        st.pop(); // 把栈里最后一个元素弹出（其实不弹出也没事）
+        return result;
+    }
+};
+```
 239. 滑动窗口最大值
 ```python
 ```
