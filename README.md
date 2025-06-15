@@ -2169,6 +2169,77 @@ class Solution(object):
 ```
 recersive method
 
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        // vector<int> result;
+        // stack<TreeNode*> st;
+        // if (root != NULL) st.push(root);
+        // while(!st.empty()){
+        //     TreeNode* top = st.top();
+        //     if(top!=NULL){
+        //         st.pop();
+        //         if(top->right)st.push(top->right);
+        //         st.push(top);                          
+        //         st.push(NULL); 
+        //         if(top->left)st.push(top->left);
+        //     }
+        //     else{
+        //         st.pop();
+        //         top= st.top();
+        //         st.pop();
+        //         result.push_back(top->val);
+
+        //     }
+        
+        // }
+        // return result;
+        vector<int> result;
+        stack<pair<TreeNode*, bool>> st;
+        if (root != nullptr)
+            st.push(make_pair(root, false));
+        while(!st.empty()){
+            auto top =st.top().first;
+            auto visited= st.top().second;
+            st.pop();
+            if (visited) { 
+                result.push_back(top->val);
+            }
+            else{
+
+                if (top->right){
+                    st.push(make_pair(top->right, false));
+                }
+                
+            
+                st.push(make_pair(top, true));
+
+                if (top->left){
+                    st.push(make_pair(top->left, false)); // 左儿子最后入栈，最先出栈
+                }
+            }
+
+        }
+        return result;
+    }
+};
+
+// the check time and add time is different
+// adding status value for checked node
+```
+
 102. Binary Tree Level Order Traversal
 ```python
 # Definition for a binary tree node.
@@ -2225,6 +2296,51 @@ class Solution:
 ```
 recursive
 use pointer to add node
+
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        queue<TreeNode*> que;
+        if(root!= NULL) que.push(root);
+        vector<vector<int>> result;
+        while(!que.empty()){
+            int size = que.size();
+            vector<int> vec;
+            for(int i=0; i<size;i++){
+                TreeNode* node = que.front();
+                que.pop();
+                vec.push_back(node->val);
+                if (node->left) que.push(node->left);
+                if (node->right) que.push(node->right);
+            }
+            result.push_back(vec);
+        }
+        return result;
+
+    }
+};
+//  void order(TreeNode* cur, vector<vector<int>>& result, int depth)
+//     {
+//         if (cur == nullptr) return;
+//         if (result.size() == depth) result.push_back(vector<int>());
+// when size ==depth, means the current depth has not been touch
+//         result[depth].push_back(cur->val);
+//         order(cur->left, result, depth + 1);
+//         order(cur->right, result, depth + 1);
+//     }
+```
 107. Binary Tree Level Order Traversal II
 ```python
 # Definition for a binary tree node.
