@@ -2732,6 +2732,56 @@ class Solution(object):
         return depth
 ```
 when meet a leaf, that means the shortest depth from root
+
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int minDepth(TreeNode* root) {
+        // recursive
+        // if (root == NULL) return 0;
+        
+        // int l = minDepth(root->left);
+        // int r = minDepth(root->right);
+        
+        // if (root->left != NULL && root->right ==NULL ){
+        //     return l+1;    
+        // }
+        // if (root->left == NULL && root->right !=NULL ){
+        //     return r+1;    
+        // }
+        // return 1+ min(l,r);
+        if (root == NULL) return 0;
+        int depth = 0;
+        queue<TreeNode*> que;
+        que.push(root);
+        while(!que.empty()) {
+            int size = que.size();
+            depth++; // 记录最小深度
+            for (int i = 0; i < size; i++) {
+                TreeNode* node = que.front();
+                que.pop();
+                if (node->left) que.push(node->left);
+                if (node->right) que.push(node->right);
+                if (!node->left && !node->right) { // 当左右孩子都为空的时候，说明是最低点的一层了，退出
+                    return depth;
+                }
+            }
+        }
+        return depth;
+    }
+};
+```
 ## 代码随想录 Day 15
 110. Balanced Binary Tree
 ```python
@@ -2770,6 +2820,37 @@ class Solution(object):
             return 1+max(leftHeight, rightHeight)
 ```
 因为求深度可以从上到下去查 所以需要前序遍历（中左右），而高度只能从下到上去查，所以只能后序遍历（左右中）
+
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int getHeight(TreeNode* cur){
+        if(cur==NULL) return 0;
+        int l = getHeight(cur->left);
+        if (l == -1) return -1;
+        int r= getHeight(cur->right);
+        if (r==-1) return -1;
+        if((r-l)<(-1) || (r-l)>1) return -1;
+        else return 1+max(l,r);
+    }
+
+    bool isBalanced(TreeNode* root) {
+        return getHeight(root) == -1 ? false : true;
+    }
+};
+```
+
 TBD iterative method
 257. Binary Tree Paths
 ```python
