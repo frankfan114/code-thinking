@@ -2505,6 +2505,63 @@ class Solution(object):
         return True
 ```
 depth first
+
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    // recursive 
+    // bool compare(TreeNode* left, TreeNode* right){
+    //     if(left ==NULL && right ==NULL) return true;
+    //     else if(left != NULL && right == NULL) return false;
+    //     else if(left == NULL && right != NULL) return false;
+    //     else if(left->val != right->val) return false;
+
+    //     bool leftS = compare(left->left, right->right);
+    //     bool rightS = compare(left->right, right->left);
+    //     bool mid= leftS && rightS;
+    //     return mid;
+    // }
+
+    bool isSymmetric(TreeNode* root) {
+        // if(root ==NULL) return true;
+        // bool res = compare(root->left, root->right);
+        // return res;
+
+        // iterative
+        if (root == NULL) return true;
+        stack<TreeNode*> st; // 这里改成了栈
+        st.push(root->left);
+        st.push(root->right);
+        while (!st.empty()) {
+            TreeNode* rightNode = st.top(); st.pop();
+            TreeNode* leftNode = st.top(); st.pop();
+            if (!leftNode && !rightNode) {
+                continue;
+            }
+            if ((!leftNode || !rightNode || (leftNode->val != rightNode->val))) {
+                return false;
+            }
+            st.push(leftNode->left);
+            st.push(rightNode->right);
+            st.push(leftNode->right);
+            st.push(rightNode->left);
+        }
+        return true;
+
+    }
+};
+```
 104. Maximum Depth of Binary Tree
 ```python
 # Definition for a binary tree node.
@@ -2529,7 +2586,47 @@ class Solution(object):
         height = 1 + max(leftheight, rightheight) #中
         return height
 ```
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
 
+    int maxDepth(TreeNode* root) {
+        // recursive
+        // if (!root) return 0;
+        // return 1 + max(maxDepth(root->left), maxDepth(root->right)); 
+
+        //iterative
+        if (root == NULL) return 0;
+        int depth = 0;
+        queue<TreeNode*> que;
+        que.push(root);
+        while(!que.empty()) {
+            int size = que.size();
+            depth++; // 记录深度
+            for (int i = 0; i < size; i++) {
+                TreeNode* node = que.front();
+                que.pop();
+                if (node->left) que.push(node->left);
+                if (node->right) que.push(node->right);
+            }
+        }
+        return depth;
+    }
+};
+```
+
+????
 ```cpp
 /**
  * Definition for a binary tree node.
