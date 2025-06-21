@@ -2962,7 +2962,70 @@ class Solution(object):
         
         return sum
 ```
+
 only left leave take into account
+
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int sumOfLeftLeaves(TreeNode* root) {
+        // recursive
+        // if (root == NULL) return 0;
+        // if (root->left == NULL && root->right== NULL) return 0;
+
+        // int leftValue = sumOfLeftLeaves(root->left);    // 左
+        // if (root->left && !root->left->left && !root->left->right) { // 左子树就是一个左叶子的情况
+        //     leftValue = root->left->val;
+        // }
+        // int rightValue = sumOfLeftLeaves(root->right);  // 右
+
+        // int sum = leftValue + rightValue;               // 中
+        // return sum;
+        
+        //iterative
+        stack<TreeNode*> st;
+        if (root == NULL) return 0;
+        st.push(root);
+        int result = 0;
+        while (!st.empty()) {
+            TreeNode* cur;
+            int size = st.size();
+            for(int i=0; i<size;i++){
+                cur = st.top();
+                st.pop();
+                if (cur->left){
+                    if(!cur->left->left && !cur->left->right){
+                        result+= cur->left->val;
+                    }
+                    else{
+                        st.push(cur->left);
+                    }
+                    
+                }
+                if(cur->right){
+                    st.push(cur->right);
+                }
+                
+            }
+        }
+        return result;
+        
+    }
+};
+```
+use parent node 
+
 513. Find Bottom Left Tree Value
 ```python
 # Definition for a binary tree node.
