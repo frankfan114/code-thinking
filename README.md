@@ -4095,5 +4095,87 @@ public:
     }
 };
 
+112. path sum
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    // recursive 
+    bool traversal(TreeNode* cur, int sum){
+        if(!cur->left&&! cur->right && ((sum-cur->val)==0)) return true;
+        if(!cur->left&&! cur->right && ((sum-cur->val)!=0)) return false;
+        bool l= false, r= false;
+        if(cur->left)  l=traversal(cur->left, (sum-cur->val));
+        if(cur->right)  r=traversal(cur->right, (sum-cur->val));
+        return l || r;
+    }
+    bool hasPathSum(TreeNode* root, int targetSum) {
+        if (!root) return false;
+        bool res= traversal(root, targetSum);
+        return res;
+    }
+};
+```
+
 // time complexity: log(n) *log(n), worst case every level has to recursive 
+```
+
+113 path sum 2
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
+        
+        stack<tuple<TreeNode*, vector<int>, int>> st;
+        vector<vector<int>> res;
+        if (!root) return res;
+
+        st.push(tuple<TreeNode*, vector<int>, int>(root,{root->val},root->val ));
+        while (!st.empty()) {
+            auto [node, path, sum] = st.top();
+            st.pop();
+
+            if (!node->left && !node->right && sum == targetSum) {
+                res.push_back(path);
+            }
+
+            if (node->right) {
+                path.push_back(node->right->val);
+                st.push({node->right, path, sum + node->right->val});
+                path.pop_back();
+            }
+
+            if (node->left) {
+                
+                path.push_back(node->left->val);
+                st.push({node->left, path, sum + node->left->val});
+                path.pop_back();
+            }
+        }
+
+        return res;
+
+    }
+};
 ```
