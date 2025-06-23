@@ -3167,6 +3167,33 @@ void backtracking(参数) {
         回溯，撤销处理结果
     }
 }
+
+```cpp
+class Solution {
+public:
+    vector<vector<int>> res; // 存放符合条件结果的集合
+    vector<int> path; // 用来存放符合条件单一结果
+    void backtracking(int n, int k, int startIndex){
+        
+        if (path.size() == k){
+            res.push_back(path);
+            return;
+        }
+
+        for (int i = startIndex; i <= 1+n-(k-path.size()); i++) { // 控制树的横向遍历
+            path.push_back(i); // 处理节点
+            backtracking(n, k, i + 1); // 递归：控制树的纵向遍历，注意下一层搜索要从i+1开始
+            path.pop_back(); // 回溯，撤销处理的节点
+        }
+    }
+    
+    
+    vector<vector<int>> combine(int n, int k) {
+        backtracking(n,k,1);
+        return res;
+    }
+};
+```
 216. Combination Sum III
 ```python
 class Solution(object):
