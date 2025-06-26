@@ -3237,8 +3237,41 @@ class Solution(object):
 1. currentSum> targetSum剪枝
 2. 9-(k-len(path))+2) : k-len(path) need number of integer
                        9-: max start place 
-					   +2 start and right exclusive 
-					   
+			+2 start and right exclusive 
+
+time complexity: O(n*2^n), 2^n max combination from C(n,k), each need O(n) time to push
+
+k-size<=9-i+1
+
+```cpp
+class Solution {
+public:
+    vector<vector<int>> res;
+    vector<int> path;
+    void backtracking(int k, int tar, int sum, int start){
+        if(path.size() ==k){
+            if(tar==sum){
+                res.push_back(path);
+            }
+            return; 
+        }
+        
+        for(int i=start; i<= 9 - (k - path.size()) + 1; i++ ){
+            path.push_back(i);
+            if (sum+i>tar){
+                path.pop_back();
+                return;    
+            }
+            backtracking(k,tar, sum+i, i+1);
+            path.pop_back();
+        }
+    }
+    vector<vector<int>> combinationSum3(int k, int n) {
+        backtracking(k, n,0,1 );
+        return res;
+    }
+};
+```
 17. Letter Combinations of a Phone Number
 ```python
 class Solution(object):
