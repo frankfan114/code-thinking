@@ -3422,6 +3422,43 @@ class Solution(object):
             sum-=candidates[i]
 ```
 same level pruning
+
+```cpp
+class Solution {
+public:
+    vector<vector<int>> res;
+    vector<int> path;
+
+    void backtracking(vector<int>& can, int target, int curSum, int start){
+        if (curSum == target){
+            res.push_back(path);
+            
+            return;
+        }
+
+        for(int i=start; i< can.size() && curSum + can[i] <= target; i++){
+            curSum+= can[i];
+            path.push_back(can[i]);
+            backtracking(can, target, curSum, i);
+            curSum-=can[i];
+            path.pop_back();
+
+        }
+
+        return;
+    }
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+
+        if (target ==0) return res;
+        int curSum=0;
+        sort(candidates.begin(), candidates.end());    
+        backtracking(candidates, target, curSum,0);
+        return res;
+    }
+};
+// 一个集合求组合，需要startIndex
+// can repeat, so startIndex not +1 when backtracking
+```
 131. Palindrome Partitioning
 ```python
 class Solution(object):
