@@ -3524,6 +3524,45 @@ class Solution(object):
         
 ```
 切割问题可以抽象为组合问题
+
+```cpp
+class Solution {
+public:
+    vector<vector<string>> result;
+    vector<string> path;
+    bool isPalindrome(const string& s, int start, int end) {
+        for (int i = start, j = end; i < j; i++, j--) {
+            if (s[i] != s[j]) {
+                return false;
+            }
+        }
+        return true;
+    }
+    void backtracking(string & s, int startIndex){
+        if(startIndex == s.size()){
+            result.push_back(path);
+            return;
+        }
+        for(int i=startIndex; i< s.size(); i++){
+            if (isPalindrome(s, startIndex, i)) { // 是回文子串
+                // 获取[startIndex,i]在s中的子串
+                string str = s.substr(startIndex, i - startIndex + 1);
+                path.push_back(str);
+            } else {                // 如果不是则直接跳过
+                continue;
+            }
+            backtracking(s, i + 1); // 寻找i+1为起始位置的子串
+            path.pop_back();  
+        }
+    }
+    vector<vector<string>> partition(string s) {
+        if(s.size()==0) return result;
+        int start =0;
+        backtracking(s,start);
+        return result;
+    }
+};
+```
 ## 代码随想录 Day 24
 93. Restore IP Addresses
 ```python
@@ -3550,6 +3589,60 @@ class Solution(object):
                     path.pop()
 ```
 2 pruning method
+
+```cpp
+class Solution {
+public:
+    vector<string> res;
+    bool isValid(const string& s, int start, int end) {
+        if (start > end) {
+            return false;
+        }
+        if (s[start] == '0' && start != end) { // 0开头的数字不合法
+                return false;
+        }
+        int num = 0;
+        for (int i = start; i <= end; i++) {
+            if (s[i] > '9' || s[i] < '0') { // 遇到非数字字符不合法
+                return false;
+            }
+            num = num * 10 + (s[i] - '0');
+            if (num > 255) { // 如果大于255了不合法
+                return false;
+            }
+        }
+        return true;
+    }
+
+    void backtracking(string& s, int startIndex, int point){
+        if(point ==3){
+            if (isValid(s, startIndex, s.size() - 1)) {
+                res.push_back(s);
+            }
+            return;
+        }
+        for(int i=startIndex; i<startIndex+3 && s.size();i++){
+            if (isValid(s, startIndex, i)) {
+                s.insert(s.begin() + i + 1 , '.');
+                point++;
+                backtracking(s, i+2, point);
+                point--;
+                s.erase(s.begin() + i + 1 );
+            }
+            else break;
+        }
+    }
+    vector<string> restoreIpAddresses(string s) {
+        if(s=="") return res;      
+        int start=0, point=0;
+        backtracking(s, start, point);
+        return res;
+    }
+};
+
+// check start> end for size(), size()-1 case
+// time complexity ???
+```
 78. Subsets
 ```python
 class Solution(object):
