@@ -3666,6 +3666,33 @@ class Solution(object):
             path.pop()
 ```
 append each time
+
+```cpp
+class Solution {
+public:
+    vector<int> path;
+    vector<vector<int>> res;
+    void backtracking(vector<int>& nums, int start){
+        if(start==nums.size()){
+            return;
+        }
+        for(int i= start; i<nums.size(); i++){
+            path.push_back(nums[i]);
+            res.push_back(path);
+            backtracking(nums, i+1);
+            path.pop_back();
+        }
+    }
+
+    vector<vector<int>> subsets(vector<int>& nums) {
+        int start = 0;
+        res.push_back(path);
+        backtracking(nums,start);
+        return res;
+    }
+    //以不需要加终止条件，因为startIndex >= nums.size()，本层for循环本来也结束了。
+};
+```
 90. Subsets II
 ```python
 class Solution(object):
