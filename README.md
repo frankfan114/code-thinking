@@ -3720,7 +3720,34 @@ class Solution(object):
         
 ```
 1. sort first
-2. use i>startIndex to let i == startIndex pass 
+2. use i>startIndex to let i == startIndex pass
+
+```cpp
+class Solution {
+public:
+    vector<int> path;
+    vector<vector<int>> res;
+    void backtracking(vector<int>& nums, int start){
+        res.push_back(path);
+        for(int i = start; i< nums.size() ; i++){
+            if (i > start && nums[i] == nums[i-1]) //!!!
+                continue;
+            path.push_back(nums[i]);
+            backtracking(nums, i+1);
+            path.pop_back();
+        }
+    }
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        backtracking(nums, 0);
+        return res;
+        
+    }
+};
+//树层去重需要先排序
+// i> start, instead of i>1 to skip in the same layer
+```
+
 ## 代码随想录 Day 25
 491. Non-decreasing Subsequences
 TBD
