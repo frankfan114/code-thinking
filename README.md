@@ -3754,6 +3754,34 @@ TBD
 ```python
 
 ```
+```cpp
+class Solution {
+public:
+    vector<int> path;
+    vector<vector<int>> res;
+    void backtracking(vector<int>& nums, int start){
+        if(path.size()>1){
+            res.push_back(path);
+        }
+        int used[201] = {0}; 
+        for(int i = start; i< nums.size(); i++ ){
+            if(!path.empty() && nums[i]<path.back()) continue;
+            if(used[nums[i]+100] == 1) continue;
+            path.push_back(nums[i]);
+            used[nums[i]+100]=1;
+            backtracking(nums, i+1);
+            path.pop_back();
+
+        }
+    }
+    vector<vector<int>> findSubsequences(vector<int>& nums) {
+        int start = 0;
+        backtracking(nums, 0);
+        return res;
+    }
+};
+// use array as hash set since the range of input is [-100,100]
+```
 
 46. Permutations
 ```python
