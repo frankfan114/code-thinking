@@ -3869,6 +3869,40 @@ class Solution(object):
  1a 1b 2 
  1b 1a 2
  same effect 树层上去重效率更高
+
+```cpp
+class Solution {
+public:
+    vector<int> path;
+    vector<vector<int>> res;
+
+    void backtrack(const vector<int>& nums, vector<bool>& used) {
+        if (path.size() == nums.size()) {
+            res.push_back(path);
+            return;
+        }
+        for (int i = 0; i < nums.size(); i++) {
+            if (used[i]) 
+                continue;                                 // already used this index
+            if (i > 0 && nums[i] == nums[i-1] && !used[i-1])
+                continue;                                 // skip duplicate
+            used[i] = true;
+            path.push_back(nums[i]);
+            backtrack(nums, used);
+            path.pop_back();
+            used[i] = false;
+        }
+    }
+
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        vector<bool> used(nums.size(),false);
+        sort(nums.begin(), nums.end());
+        backtrack(nums, used);
+        return res;
+    }
+};
+// allow repeat in the nums, so can't create the bool array by the size of the possible input size
+```
 ## 代码随想录 Day 27
 455. Assign Cookies
 ```python
