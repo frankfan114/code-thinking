@@ -4734,4 +4734,36 @@ public:
     }
 };
 ```
+332. reconstruct itineray
+```cpp
+class Solution {
+    unordered_map<string, multiset<string>> adj;
+    void dfs(const string& u, vector<string>& route) {
+        auto &ms = adj[u];
+        while (!ms.empty()) {
+            // pick the smallest lexicographical flight
+            auto it = ms.begin();
+            string v = *it;
+            ms.erase(it);
+            dfs(v, route);
+        }
+        route.push_back(u);
+    }
+public:
+    vector<string> findItinerary(vector<vector<string>>& tickets) {
+        // 1. Build graph
+        for (auto &t : tickets) {
+            adj[t[0]].insert(t[1]);
+        }
+        // 2. Eulerian DFS
+        vector<string> route;
+        dfs("JFK", route);
+        // 3. route is in reverse
+        reverse(route.begin(), route.end());
+        return route;
+    }
+};
 
+```
+
+use graphs ???
