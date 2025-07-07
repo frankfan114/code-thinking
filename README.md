@@ -4019,6 +4019,27 @@ class Solution(object):
         return max
 ```
 greedy point: what bring to the next increment need to be positive
+
+```cpp
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int result=INT32_MIN;
+        int count=0;
+        for(int i=0; i<nums.size();i++){
+            count+=nums[i];
+            if(count>result){
+                result=count;
+            }
+            if(count<=0) count=0;
+        }   
+        return result;
+    }
+};
+```
+greedy point: if count<0, start with next
+dp point : record the count 
+
 ## 代码随想录 Day 28
 122. Best Time to Buy and Sell Stock II
 ```python
