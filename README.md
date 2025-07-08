@@ -4092,6 +4092,22 @@ class Solution(object):
 ```
 key part: cover = max(i+nums[i], cover)
 update cover each time to enlarge the range 
+
+```cpp
+class Solution {
+public:
+    bool canJump(vector<int>& nums) {
+        int cover=0;
+        if(nums.size()==1) return true;
+        for(int i =0; i<= cover; i++){
+            cover=max(i+nums[i],cover);
+            if(cover>=nums.size()-1) return true;
+        }
+        return false;
+    }
+};
+```
+
 45. Jump Game II
 ```python
 class Solution(object):
