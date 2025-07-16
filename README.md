@@ -4129,6 +4129,26 @@ class Solution(object):
         return ans
 ```
 the only condition for step +1 is coverga smaller than current move, before move reach end
+
+```cpp
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+        int curDistance = 0;    // 当前覆盖的最远距离下标
+        int ans = 0;            // 记录走的最大步数
+        int nextDistance = 0;   // 下一步覆盖的最远距离下标
+        for (int i = 0; i < nums.size() - 1; i++) { // 注意这里是小于nums.size() - 1，这是关键所在
+            nextDistance = max(nums[i] + i, nextDistance); // 更新下一步覆盖的最远距离下标
+            if (i == curDistance) {                 // 遇到当前覆盖的最远距离下标
+                curDistance = nextDistance;         // 更新当前覆盖的最远距离下标
+                ans++;
+            }
+        }
+        return ans;
+    }
+};
+// point to size-2, no matter what's the size-2 has in value, can always reach the end with 1 step
+```
 1005. Maximize Sum Of Array After K Negations
 ```python
 class Solution(object):
